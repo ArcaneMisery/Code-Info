@@ -312,7 +312,201 @@ const element = document.getElementById('#some-id')
       0 3.001 3.001 0 01-6 0zm1 0a2 2 0 114.001.001A2 2 0 013 12z"
   />
 </svg>
+```  
+# Списки  
+
+```html
+<ul>
+  <li>someli</li>
+  <li>someli</li>
+  <li>someli</li><!-- Список Маркерованный  -->
+</ul>
+<ol>
+  <li>someli</li>
+  <li>someli</li><!--Список Нумерованный  -->
+</ol>
+```  
+# Вставка медиафайлов  
+  
+  Аудио
+```html
+<audio controls><!--  Вставка адио, атрибут controls обязателен, тег имеет строчный формат, свои элементы управления можно создать с помощью джавы -->
+  <source src="audio.mp3" type="audio/mpeg">
+  <source src="audio.ogg" type="audio/ogg">
+  <p>
+    Ваш браузер не поддерживает встроенное аудио. Попробуйте
+    <a href="audio.mp3" download>скачать</a> файл. <!--download не переходит по ссылке а предлагает скачать файл  -->
+  </p>
+</audio>
+```  
+Видео
+ ```html  
+ <video controls src="frontend.mp4" poster="frontend.jpg" width="580"><!--Вставляет видео, артибут постер ставит картинку-заставку.  -->
+  Простите, но ваш браузер не поддерживает встроенные видео.
+  Попробуйте скачать видео <a href="frontend.mp4">по этой ссылке</a>
+  и открыть его на своём устройстве.
+</video>
+```    
+## Атрибуты video
+
+playsinline - Запрещает видео сразу входить в полноэкранный режим на моб. устройствах
+buffered - собирает информацию о том какие минуты уже загрузились.
+- preload - предварительная загрузка  
+  - none - не загружать
+  - metadata - загрузить только инфу. о файле.
+  - auto - вместе со траницей(по умолчанию).  
+  <details>  
+  <summary  style="font-size:18px;">  Фоновое видео, или живой задний фон! </summary>  
+
+  ``` html  
+  <style>
+  .background-video {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  min-width: 100%;
+  min-height: 100%;
+  }
+
+  .content {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background: rgba(0, 0, 0, 0.5);
+  color: #f1f1f1;
+  width: 100%;
+  padding: 20px;
+  }</style>
+    <video autoplay muted loop class="background-video">
+     <source src="storm.mp4" type="video/mp4">
+    </video>
+    <div class="content">
+   <h1>Банановый эквивалент</h1>
+  <p>Мы живем в радиоактивном мире. Это нормально?</p>
+    </div>
+  ```  
+  Рекомендуется использовать форматы AV1 или WebM, а также добавить атрибут mute.  
+
+  </details>  
+
+### Вставка контента из других сайтов (iframe);  
+```html  
+<iframe
+  id="inlineFrameExample"
+  title="Inline Frame Map"
+  width="560"
+  height="400"
+  frameborder="1"
+  allowfullscreen="true"
+  src="https://yandex.ru/map-widget/v1/-/CBFkaYSE0A"
+>
+</iframe><!--  создает контейнер  -->
 ```
+Атрибуты    
+srcdoc - позволяет вставку html кода целиком, src в таком случае игнорируется.
+sandbox - ограничивает дейвствия вставляемого окна сайта(попапы, модальные окна), так же имеет множество значений.   
+
+# Важно. Для вставки стороннего сайта лучше использовать cross-origin  
+```html 
+<embed src="sample.pdf" type="application/pdf"><!-- для вставки пдф файлов -->
+```  
+```html  
+<details open><!-- атрибут open говорит что подсказка по умолчанию будет открыта -->
+  <summary>Легенда</summary><!--подсказка с нотентом на html -->
+  <p>Раскрывающийся текст</p>
+</details>
+```   
+<hr/>  
+
+# Таблицы  
+  
+```html 
+<table><!--открывает контейнер таблицы  -->
+  <thead><!--деление таблицы на верхнюю часть -->
+   <tr>  <!--контейнер создающий уровень со строчками указываемыми в нем -->
+      <th>Место</th><!-- создает легенды столбцов-->
+      <th>Оценка</th>
+      <th>Название фильма</th>
+      <th>Год выхода</th>
+    </tr>
+  </thead>
+  <tbody> <!--делоение таблицы на тело -->
+    <tr>
+      <td>1</td> <!--обычная строчка с контентом-->
+      <td>9.1</td>
+      <td>Зелёная миля</td>
+      <td>1999</td>
+    </tr>
+    <tr>
+      <td>2</td>
+      <td>9.1</td>
+      <td>Побег из Шоушенка</td>
+      <td>1994</td>
+    </tr>
+    <tr>
+      <td>3</td>
+      <td>8.6</td>
+      <td>Властелин колец: Возвращение Короля</td>
+      <td>2003</td>
+    </tr>
+  </tbody>
+</table>
+```  
+<table>
+  <thead>
+    <tr>
+      <th>Место</th>
+      <th>Оценка</th>
+      <th>Название фильма</th>
+      <th>Год выхода</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>1</td>
+      <td>9.1</td>
+      <td>Зелёная миля</td>
+      <td>1999</td>
+    </tr>
+    <tr>
+      <td rowspan="3">2</td> <!--rowspan - обьединяет ряды 2+-->
+      <td>9.1</td>
+      <td>Побег из Шоушенка</td>
+      <td>1994</td>
+    </tr>
+    <tr>
+      <td colspan="2">3</td><!--colspan - обьединяет колонки 2+-->
+      <td>8.6</td>
+      <td>Властелин колец: Возвращение Короля</td>
+      <td>2003</td>
+    </tr>
+  </tbody>
+</table>  
+  
+  
+  ```html
+  <caption>Заголовок таблицы</caption>
+  <tfoot></tfoot><!--так же есть делительный элемент -->
+  ```  
+  ### Таблица подстраивается под ширину контента в ней т.е. не адаптивна для моб. устройств.  
+  Бороться с данной проблемой можно с помощью свойства display, скрывая второстепенную информацию.ы
+  
+
+  
+
+
+  
+
+
+
+ 
+
+
+
 
 
 
