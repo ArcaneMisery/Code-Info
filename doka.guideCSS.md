@@ -388,5 +388,217 @@ input:valid + .validity-icon::before {
 .myclass{
    attr(atribute)
 }
-/* Позволяет получать значение любо */
+/* Позволяет получать значение любого атрибута тега, целесообразно использовать:*/
+a::before{
+   content:'attr(class)'
+}  
+calc() /*калькулятор в css*/
+div{
+   height: 70px;
+   width: calc(100% / 3);
+   margin-top: calc(50% - 70px);  
+}  
+linear-gradient()/*Используется для создания фона в виде градиента*/  
+.element {
+  background-image: linear-gradient(#2E9AFF, #F498AD);/*Самый простой вид градиента*/
+}
+/* Точки остановки цвета, по сле запятой можно указывать длину плавности перехода цвета, если точка конца и начала у цветов совпадают то линия будет четкой */
+.element {
+  background-image: linear-gradient(#F498AD 25%, #2E9AFF 25% 50%, #FFD829 75%);
+}
+```  
+<details><summary>Результат</summary>  
+
+<style>
+   .element {
+      min-width: 400px;
+      min-height:200px;
+  background-image: linear-gradient(#F498AD 25%, #2E9AFF 25% 50%, #FFD829 75%);
+}
+</style>  
+
+<div class="element"></div>
+
+</details>  
+
+```css
+/* Направление градиента */
+.element1{
+   background-image: linear-gradient(-30deg, #2E9AFF, #F498AD);
+   /* Мы можем задавать направление градиента, используя ключевые слова с приставкой to: to left, to top, to right. */
+}
+.element2{
+   background-image: repeating-linear-gradient( #2e4aff, #56aa34)
+}/*Повторяющийся градиент*/
+.element3{
+       background: linear-gradient( 217deg, rgb(46 154 255 / 1), rgb(255 100 100 / 0) 70.71% ), linear-gradient( 127deg, rgb(244 152 173 / 1), rgb(100 255 100 / 0) 70.71% ), linear-gradient( 336deg, rgb(255 216 41 / 1), rgb(100 100 255 / 0) 70.71% );
+       /* Множественный градиент */
+}
+```
+<details><summary>Результат последнего градиента</summary>  
+
+<style>
+.element2 {
+    width: 65%;
+    height: 200px;
+    background: linear-gradient( 217deg, rgb(46 154 255 / 1), rgb(255 100 100 / 0) 70.71% ), linear-gradient( 127deg, rgb(244 152 173 / 1), rgb(100 255 100 / 0) 70.71% ), linear-gradient( 336deg, rgb(255 216 41 / 1), rgb(100 100 255 / 0) 70.71% );
+</style>  
+<div class="element2"></div>
+
+</details>  
+
+```css
+/*Круговой градиент задается в зависимости от значений circle и ellipse*/
+.element {
+  background-image: radial-gradient(circle, #09ff00, red);
+}
+.element {
+  background-image: conic-gradient(#3590eb, #ee82cf);
+}
+/*В таком градиенте цвета вращаются вокруг центральной точки элемента, напоминая ход часов*/  
+
+var()
+/*Заводим в переменную стиль и применяем его на кнопке, так же если мы изменим цвет в переменной цвет в кнопке тут же изменится*/
+:root {
+   --color-cyan: #00fff; 
+}
+
+.button {
+   background-color: var( --color-cyan);
+}
+.element{
+   filter: opacity(0.3);
+   /*Создает фильтр со свойством в нем как бы по иогу пропуская чере него элемент, можно перечислять несколько фильтров через пробел*/
+}
+/* CSS Transform */
+.element{
+   transform: ;
+}
+.element {
+   transform: translate (x, y);
+}/*сдвигает обьект по осям x y */
+/* применение для центрирования обьекта любой ширины */
+.element{
+   transform: translate(-50%, 0);
+   position: relative;
+   left: 50%;
+   /*Мы зацентрировали обьект по горзантали*/
+   /*Важно помнить что translate использует проценты исходя из размеров блока*/
+}
+transform: scale(x, y);/*увеличит обьект как будто через лупу, единицы между 0 и 1 будут уменьшать обьект, а отрицательные значения зеркально разворачивать обьект по одной из осей */
+Transform: rotate( 0deg);/* Разворачивает обьект на заданное кол во градусов обьект*/
+Transform: skew( 0deg, 0deg);/*Ворочает обьект по разным углам одновременно*/
+Transform: matrix(Масштаб по горзонтали, деформация по вертекали, деформация по горизонтали, масштаб по вертикали, смещение x, смещение y);/*Вписывает все свойства в одно анимационное движение*/
+Transform-origin:center/top left/45px 20px/ 0 0;/*смещает центр происхождения трансформации*/
+/* 3D трансформация */  
+prespective-origin/*Работает так же как и ориджин в 2д трансформе*/
+prespective: 321px;/* сместить обект назад в глубину с 3д эффектом*/
+Transform: translate3D(x, y, z);
+Transform: rotate3D(x, y, z, deg);/*3d разврот обьекта*/
+/* Так же можно просто через запятую перечислить трансформационные свойства в универсальном свойстве Translate */
+Transform-style: flat/preserve 3d;
+backface-visibility: visible/hidden;/*Скрывает заднюю часть обьекста с помощью такого свойста можно перевернуть блок и как бы показать его заднюю часть*/
+/* ----------------------------------------------------------------------- */
+```  
+# Директивы  
+
+```css
+@font-face {
+  font-family: "Lexend Peta Regular";
+  src: local("Lexend Peta Regular"),
+    local("LexendPeta-Regular"),
+    url("Lexend Peta-webfont.woff2") format("woff2"),
+    url("Lexend Peta-webfont.woff") format("woff"),
+    url("Lexend Peta-webfont.svg") format("svg");
+}
+/* Подключение шрифта */
+@import "fonts.css";
+@import "buttons.css";
+@import url("https://fonts.googleapis.com/css2?family=Andika+New+Basic&display=swap");
+/* Импорт сисс кода и шрифта*/
+@keyframes circle-to-square {
+  from {
+    border-radius: 50%;
+    background-color: red;
+  }
+  to {
+    border-radius: 0;
+    background-color: blue;
+  }
+}
+/*Создание анимационных кадров не забывать про 2 ключевых слова from, to */  
+@media (min-width: 900px) {
+  .block {
+    display: flex;
+  }
+}
+/* медиазапросы используются для решения задач адаптив и из них можно получать различную информацию о устройстве с которого сделан вход на сайт */
+@supports (--foo: bar) {
+  .block {
+    color: var(--color);
+  }
+}
+/* Проверяет поддерживает ли браузер данное свойство, можно использовать not() и таким образом добится замены кода если свойство не поддерживается браузером */  
+/* ----------------------------------------------------------------------- */
+```
+# Единицы измерения
+```css
+px
+vh/*относительно высоты вьюпорта*/
+vw/*относительно ширины вьюпорта*/
+em/*относительно размера шрифта*/
+rem/*относительна размера шрифта указанного в корне*/
+
+```  
+# Анимации
+
+```css
+/* для использования анимации мы должн использовать @keyframes описанные выше  */
+Animation-name: (имя ключевых кадров),(имя ключевых кадров);
+Animation-duration: 2s, 2s; /*время длительности анимаци*/
+аnimation-timing-function: ease/linear/;/*устанавливает тип анимаций*/
+animation-interation-count:3(infinite);/*указывает сколько раз проиграется анимация*/
+animation-direction/*Определяет как двигается анимация*/
+animation-play-state: paused;/*приостанавливает анимацию*/
+animation-delay:; /*задержка перед анимацией*/
+animation-fill-mode /*Определяет значения в конце анимации*/
+/* Универсальное св-во animation */
+animation:(name), (duration), (timing-function), (count), (direction), (delay), (fill-mode);
+
+
+```
+<a href="https://fls.guru/cssanimation.html" style="font-size:20px;">Шпаргалка по css анимациям</a>  
+
+```css
+/* TRANSITIONS */
+transition-duration: ; /*Время перехода*/
+transition-property: all/(нужное свойство); /*Устанавливает на какое из значений будут работать свойства transition*/
+/* Универсальное свойство transition*/
+transition:(property), (duration), (timing-function), (delay);
+```
+<a href="https://fls.guru/csstransition.html" style="font-size:20px;">Шпаргалка по css Транзишн переходам</a>  
+
+# Background
+
+```css
+div {
+  background: #000000 url("bkg.png") no-repeat center / cover;
+}
+/* универсальное свойство bg цвет, картника, повторность картинки, позиционирование, маштабирование по всей области родителя */
+background-size: contain/cover;
+/* cover для нормального маштабирования картинок */
+```
+<a href="hhttps://fls.guru/cssbackground.html" style="font-size:20px;">Шпаргалка по css BACKGROUND</a>  
+
+# Позиционированние  
+
+```css
+position:relative, absoute, fixed, sticky;
+/* relative открывает для элемента дополнительные возможности смещения left right top bottom а так становится позиционным родителем для вложенных в него блоков*/
+
+/* absolute как будто вырывает из кода элемент распологая его поверх остальных на странице, если у родителя прописан relative то абсолютное позиционнирование будет относительно родителя, тогда как по умолчанию относительно документа.*/
+
+/* fixed позиционирует элемент относительно окна браузера либо ближайшего родителя с прокруткой как и position absolute но прокрутить такой элемент не удастся */
+
+/* sticky превращается из положения static в  fixed и прилипает к прокрутке так же при скролле каждый следующий блок sticky накроет предыдущий*/
 ```
