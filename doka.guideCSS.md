@@ -82,9 +82,311 @@ div{
    1. В теге;
    2. Тегом style;
    3. С помощью импорта
-   4. С помощью нового документа и тега link в контейнере head
+   4. С помощью нового документа и тега link в контейнере head  
+     
+Плюс первого подхода: ускорение загрузки, не нужно писать обращения(селекторы), удобно отлаживать код.  
+
+Минсы первого подхода: Приорететность у такого подхода отменять стили получится лишь тегом !important, прописывать их придется слишком много, нечитабельность и наваленность кода, нельзя применять псевдо-.  
+<hr />
          
-Плюс первого подхода это скорость загрузки, изолированность работы, минус в том что чем больше таким образом написано кода тем больше вес html документа, тем дольше он загружается.  
+Плюс второго подхода это скорость загрузки, изолированность работы.  
 
-Плюс Ворого подхода 
+Минус в том что чем больше таким образом написано кода тем больше вес html документа, тем дольше он загружается.  
+<hr />  
+Плюс третьего подхода это разбивание большого css файла на маленькие(применимо в больших проектах).  
+Минус третьего подхода в замедлении загрузки страницы.  
 
+<hr />  
+Последний подход рекомендуется использовать всего по умолчанию.  
+  
+# Селекторы  
+Селекторы(обращения) бывают:
+```css  
+   div/*по тегу*/
+   .class/*по классу */  
+   #myid/*по интендификатору*/
+   .news__card .text/*по потомку*/  
+   */*обращается ко всем жлементам не включая псевдоэлементы, для них можно прописать отдельно *::before*/
+   div[data-]/*по атрибуту тега*/  
+   h1, h2, .code span, #id, ul/*Комбинированные (тут со вложенностью span)*/  
+   /*Так же соеденение селекторов (+) элемент справа от + должен следовать сразу за элементом слева от +(не рабортает со вложенностью)*/
+   /* > переключение вложенности */
+```  
+<hr />  
+
+# Псевдоклассы  
+Псевдокласс - вид селектора который уточняет состояие.  
+```css
+:hover/*Говорит что правила применятся при наведении*/  
+:link/*Для оформления стиля ссылок еще никогда не открытых*/
+:visited/*Для оформления ссылок уже посещенных*/
+:active/*В состоянии зажатой мышки на элементе*/
+:first-child, :last-child, :nth-child()/*обращения к элементам в родительском обьекте. Так же в nth-child() кроме порядкового номера можно указать odd- все нечетные even - все четные */
+:focus/*При наведение на элемент при помощи TAB или мышью*/
+:not()/*Все кроме одного*/
+/*Хорошо сокращает строки кода хороший пример использования*/
+li:not(:last-child) {
+  margin-bottom: 1em;
+}
+/* даем все лишкам отступ снизу кроме последнего, где он не нужен, теперь на не надо дополнительно убирать отступ у последнего ли */
+:checked/*При отметке чекбокса и тд*/
+:in-range:out-of-range/*Работает с css свойствами может быть очень полезно для придумывания пороля*/
+/* Пример применения такого псевдокласса */
+```
+<details><summary>Пример</summary>  
+
+```html
+<input class="with-range" type="number" min="10" max="20" step="1">
+```
+```css
+.with-range {
+  border: 1px solid black;
+}
+
+.with-range:in-range {
+  border-color: green;
+  background-color: rgb(0 255 0 / 20%);
+}
+
+.with-range:out-of-range {
+  border-color: red;
+  background-color: rgb(255 0 0 / 20%);
+}  
+```  
+  Результат
+  <style>
+     .with-range {
+  border: 1px solid black;
+}
+
+.with-range:in-range {
+  border-color: green;
+  background-color: rgb(0 255 0 / 20%);
+}
+
+.with-range:out-of-range {
+  border-color: red;
+  background-color: rgb(255 0 0 / 20%);
+}
+  </style>
+  <input class="with-range" type="number" min="10" max="20" step="1">
+
+</details>  
+
+```css  
+:invalid:valid/*используется для отметки правильности/неправильности заполнения форм*/
+/* Пример использования */
+```
+<details><summary>Пример</summary>  
+
+```html  
+<form>
+  <div class="form-row">
+    <label for="first-name">Имя:</label>
+    <input type="text" name="first-name" id="first-name" required>
+    <span class="validity-icon"></span>
+  </div>
+  <div class="form-row">
+    <label for="email">E-mail:</label>
+    <input type="email" name="email" id="email">
+    <span class="validity-icon"></span>
+  </div>
+  <div class="form-row">
+    <label>
+      <input type="checkbox" name="agree" id="agree" required>
+      Я согласен с политикой обработки персональных данных
+    </label>
+  </div>
+  <div class="form-row">
+    <button type="submit">Отправить</button>
+  </div>
+</form>
+
+```  
+```css  
+input:invalid {
+  border: 2px solid red;
+}
+
+input:invalid + .validity-icon::before {
+  content: '✖';
+  color: red;
+}
+
+input:valid + .validity-icon::before {
+  content: '✓';
+  color: green;
+}
+
+[type="checkbox"]:invalid {
+  outline: 2px solid red;
+  outline-offset: 2px;
+}
+
+```  
+Результат  
+<style>
+input:invalid {
+  border: 2px solid red;
+}
+
+input:invalid + .validity-icon::before {
+  content: '✖';
+  color: red;
+}
+
+input:valid + .validity-icon::before {
+  content: '✓';
+  color: green;
+}
+
+[type="checkbox"]:invalid {
+  outline: 2px solid red;
+  outline-offset: 2px;
+}
+
+</style>  
+<form>
+  <div class="form-row">
+    <label for="first-name">Имя:</label>
+    <input type="text" name="first-name" id="first-name" required>
+    <span class="validity-icon"></span>
+  </div>
+  <div class="form-row">
+    <label for="email">E-mail:</label>
+    <input type="email" name="email" id="email">
+    <span class="validity-icon"></span>
+  </div>
+  <div class="form-row">
+    <label>
+      <input type="checkbox" name="agree" id="agree" required>
+      Я согласен с политикой обработки персональных данных
+    </label>
+  </div>
+  <div class="form-row">
+    <button type="submit">Отправить</button>
+  </div>
+</form>  
+
+</details>  
+  
+```css  
+:root {
+   /*Задаем всему документу шрифт и 2 переменныею*/
+  font-family: 'Oswald', sans-serif;
+  --button-size: 40px;
+  --main-color: #bada55;
+   }/*Обращается к корневому тегу элемента - html позволяет задовать всему документу кастомные свойства */
+   /*так же нужно не забывать что специфичность такого обращения выше чем про сто по тегу html*/
+```  
+<hr />  
+
+# Псевдоэлементы
+Псевдоэлементы это обращения создающие несуществующий в html элемент разметки управляемый лишь при помощи css.  
+
+```css
+.element::before/*Создает контент до элемента к которому идет обращение*/
+.element::after/*Создает контент после элемента к которому идет обращение*/  
+.element::before::after{
+   content: ' ' /*Такое свойство обязательно должно присутствовать*/
+}
+``` 
+ 
+<details><summary>Пример подключения анимации через псевдоэлементы</summary>  
+
+```html
+<a href="#" class="link">выбери меня</a>
+```  
+
+```css
+.link {
+  position: relative;
+}
+
+.link::before,
+.link::after {
+  content: "";
+  height: 14px;
+  width: 14px;
+  position: absolute;
+  transition: all 0.6s;
+}
+
+.link::before {
+  top: 0;
+  left: 0;
+  border-top: 6px solid #000000;
+  border-left: 6px solid #000000;
+}
+
+.link::after {
+  bottom: 0;
+  right: 0;
+  border-bottom: 6px solid #000000;
+  border-right: 6px solid #000000;
+}
+
+.link:hover::before,
+.link:hover::after {
+  width: 100%;
+  height: 100%;
+  transition: all 0.3s;
+}
+```  
+Результат  
+
+<style>
+.link {
+  position: relative;
+  display: block;
+  width: 100px;
+}
+
+.link::before,
+.link::after {
+  content: "";
+  height: 14px;
+  width: 14px;
+  position: absolute;
+  transition: all 0.6s;
+}
+
+.link::before {
+  top: 0;
+  left: 0;
+  border-top: 6px solid #000000;
+  border-left: 6px solid #000000;
+}
+
+.link::after {
+  bottom: 0;
+  right: 0;
+  border-bottom: 6px solid #000000;
+  border-right: 6px solid #000000;
+}
+
+.link:hover::before,
+.link:hover::after {
+  width: 100%;
+  height: 100%;
+  transition: all 0.3s;
+}
+
+</style>
+<a href="#" class="link">выбери меня</a>
+
+</details>
+
+```css
+::first-letter/*Выбирает первую букву первой строки блочного элемента*/
+::first-line/*Выбирает первую строку бочного или внутри блочного элемента*/
+```  
+<hr />  
+
+# Функции  
+```css
+.myclass{
+   attr(atribute)
+}
+/* Позволяет получать значение любо */
+```
