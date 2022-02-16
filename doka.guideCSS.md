@@ -5,6 +5,8 @@
    
 <img src="https://doka.guide/css/box-model/images/box-model-725w.webp" alt="dadas">  
 
+![box-model](https://doka.guide/css/box-model/images/box-model-725w.webp)  
+
 То бишь на каждый блок имеет:
 1. ядро с контентом и значениями width и height;
 2. отступ внутри блока но до контента padding;
