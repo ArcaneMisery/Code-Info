@@ -2,8 +2,9 @@
 ## Основы
 ## Блочная модель box model  
 Идея заключается в том что каждый блок выглядит следующим образом  
-  
-![box-model](https://doka.guide/css/box-model/images/box-model-725w.webp)  
+   
+<img src="https://doka.guide/css/box-model/images/box-model-725w.webp" alt="dadas">  
+
 То бишь на каждый блок имеет:
 1. ядро с контентом и значениями width и height;
 2. отступ внутри блока но до контента padding;
@@ -601,4 +602,4 @@ position:relative, absoute, fixed, sticky;
 /* fixed позиционирует элемент относительно окна браузера либо ближайшего родителя с прокруткой как и position absolute но прокрутить такой элемент не удастся */
 
 /* sticky превращается из положения static в  fixed и прилипает к прокрутке так же при скролле каждый следующий блок sticky накроет предыдущий*/
-```
+```  
