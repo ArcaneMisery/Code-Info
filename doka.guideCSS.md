@@ -954,4 +954,88 @@ text-shadow: 5px 5px #ffe2e7;
     - Если задано 2 то это смещение по x,y.
     - Третье значение - размытие тени
   - Цвет тени  
+
+# Интерфес и взаимодействия
+```css
+
+cursor: url(cat.png) 2 2, default;
+/*cursor:url(картинка), смещение вниз, смещение вправо, значение которое применится если не будет работать картинка.*/
+/*координаты могут быть только положительные и их обязательно 2*/
+/*Другие значения:*/
+/*default - обычная стрелка, pointer - палец над ссылками, none, и т.д.(еще есть очень много значений курсора)*/
+pointer-events: none/auto;
+/*отвечает за то будет ли мышь реагировать на любые события(вплолть до копирования текста)*/
+scroll-behavior: smooth/auto;
+/*Отвечает за плавность прокрутки внутри блока(плохо работает в safari)*/
+scroll-padding-top-right-bottom-left
+/*Управляет отступом полосы прокрутки, схоже с функцией в js с pageYOffset*/  
+
+caret-color: #cc0000; 
+/*позволяет менять цвет курсора ввода*/
+/*Можно с его помощью сделать подобную интересную штуку*/
+```
+<details><summary>Интересная штука</summary>  
+
+```html
+<input type="text" class="rainbow">
+```
+```css
+@keyframes rainbow {
+  0% { caret-color: red; }
+  20% { caret-color: orange; }
+  40% { caret-color: yellow; }
+  60% { caret-color: green; }
+  80% { caret-color: blue; }
+  100% { caret-color: purple; }
+}
+
+input {
+  display: block;
+  width: 60vw;
+  height: 50px;
+  font-family: "Roboto", sans-serif;
+  font-size: 50px;
+  caret-color: red;
+  background: rgb(255 255 255 / .1);
+  color: #eee;
+  border-radius: 1rem;
+  border: 2px dotted rgb(255 255 255 / .1);
+}
+
+input:focus {
+  animation: 3s infinite rainbow;
+}
+``` 
+Результат  
   
+<style>
+  @keyframes rainbow {
+  0% { caret-color: red; }
+  20% { caret-color: orange; }
+  40% { caret-color: yellow; }
+  60% { caret-color: green; }
+  80% { caret-color: blue; }
+  100% { caret-color: purple; }
+}
+
+.rainbow {
+  display: block;
+  width: 60vw;
+  height: 50px;
+  font-family: "Roboto", sans-serif;
+  font-size: 50px;
+  caret-color: red;
+  background: rgb(255 255 255 / .1);
+  color: #eee;
+  border-radius: 1rem;
+  border: 2px dotted rgb(255 255 255 / .1);
+}
+
+.rainbow:focus {
+  animation: 3s infinite rainbow;
+}
+</style>
+<input type="text" class="rainbow">  
+
+
+</details>   
