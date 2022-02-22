@@ -106,7 +106,7 @@ if(age < 14 || age > 90){
 };*/
 // -----------------------------
 
-let whoAreYou = prompt(`Кто вы`, ``);
+/*let whoAreYou = prompt(`Кто вы`, ``);
 let password;
 if(whoAreYou == `Админ`){
    password = prompt(`Введите пороль`,``);
@@ -121,4 +121,66 @@ alert(`Зравствуй Админ`);
    alert(`отменено`)
 }else{
    alert(`неверный пороль`)
+};  
+
+let emptyString = '';
+console.log(typeof emptyString);
+
+let userName = prompt(`Кто вы?`, ``);
+if(userName === `Админ`){
+   let userPass = prompt(`Пороль?`, ``);
+   if(userPass === `123`){
+      alert(`Здравствйте!`);
+   }else if(userPass === `` || userPass === null) {
+      alert(`Отменено`);
+   }else{
+      alert(`Неверно введен пороль`)
+   };
+}else if(userName === `` || userName === null){
+   alert(`Отменено`);
+}else{
+   alert(`Я вас не знаю`)
+};*/
+let i = 3;
+
+while (i) {
+  console.log( i-- );
+}
+//нуль на котором будет false не выведется  
+i = 0;
+while (++i < 5) console.log(i);
+// вывод от 1 до 4, i увеличивается на 1 и дальше сравнивается
+i = 0
+while (i++ < 5) console.log(i);
+// вывод от 1 до 5 т.к в сравнении будет возвращатся старое значение i
+// то есть i увеличилась на единицу, а в сравнении вернулась прошлым значением.
+for (let i = 0; i < 5; i++) console.log(i);
+for (let i = 0; i < 5; ++i) console.log(i);
+// от 0 До 4 в обоих случаях тк for изначально определяет новую i 
+for(let i = 0; i <= 10; i++){
+   if(i % 2 !== 0 || i == 0)continue;
+   console.log(i);
+};
+for (let i = 0; i < 3; i++) {
+   console.log( `number ${i}!` );
+ };
+ i = 0
+   while (i < 3){
+      console.log(`number ${i}!`);
+      i++; 
+   }
+for(let i = 0; ;i++ ){
+   let a = +prompt(`Введите число больше 100`, ``);
+   if(a > 100 || a == 0)break;
+}
+
+let n;
+n = 20;
+nextValue: 
+for (let i = 2 ; i <= n; i++){
+   
+   for(let j = 2; j < i; j++){
+      if(i % j == 0)continue nextValue;
+   }
+   console.log(i);
 };
