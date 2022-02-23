@@ -183,4 +183,44 @@ for (let i = 2 ; i <= n; i++){
       if(i % j == 0)continue nextValue;
    }
    console.log(i);
+};  
+
+let bigger = -13;
+let m = bigger < 0;
+console.log(m);  
+
+function checkAge(age){  
+
+   return (age > 18) ?  true :  confirm(`Mom?`); 
+
 };
+function checkAge(age){
+
+   return ((age > 18) || confirm(`Parents?`))
+};
+
+function min (a, b){
+   if (a > b){
+      return b;
+   }else{
+      return a; 
+   } 
+};
+
+function pow (x, n){
+   if (n < 1 || n % 1 !== 0){
+      return alert(`Число не натурально!`);
+   };
+   
+   let degree = x ** n;
+   return degree; 
+} 
+console.log(pow (3, 3));  
+
+let user = {
+   name: `Admin`,
+   age: 30
+}
+alert(user.age);
+delete user.age;
+alert(user.age);
