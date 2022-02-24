@@ -223,4 +223,31 @@ let user = {
 }
 alert(user.age);
 delete user.age;
-alert(user.age);
+alert(user.age);  
+//---------------------------------------------------------------
+
+
+
+
+
+let menu = {
+   width : 200,
+   hight : 300,
+   title : `my menu`
+};
+
+function multiplyNumeric(menu){
+
+   for (let key in menu){
+      if(typeof(menu[key]) === 'number'){
+         menu.width = key * 2;
+         console.log(menu[key]);
+      };
+   }
+
+};
+multiplyNumeric(menu);  
+//console.log(menu[key] * 2);
+console.log(menu[key]);
+
+

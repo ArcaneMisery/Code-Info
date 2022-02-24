@@ -49,7 +49,7 @@ alert(user.name)// Petya
 ```javascript
 let user = {};
 
-user["likes birds"] = true; // присваиваем свойство и значение в массив
+user["likes birds"] = true; // присваиваем свойство и значение в обьект
 alert(user["likes birds"]); // true
 delete user["likes birds"]; // удаление свойства
 
