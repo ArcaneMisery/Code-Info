@@ -236,18 +236,64 @@ let menu = {
    title : `my menu`
 };
 
-function multiplyNumeric(menu){
+/*function multiplyNumeric(menu) {
 
-   for (let key in menu){
-      if(typeof(menu[key]) === 'number'){
-         menu.width = key * 2;
-         console.log(menu[key]);
-      };
-   }
-
+   for (let key in menu) {
+      typeof (menu[key]) === 'number' ? menu[key] = menu[key] * 2 : null;
+      console.log(menu[key]);
+   };
 };
+
 multiplyNumeric(menu);  
 //console.log(menu[key] * 2);
-console.log(menu[key]);
+console.log(menu[key]);*/
 
 
+
+
+function multiplyNumericTwo(menu) {
+
+   for (let key in menu) {
+      if (typeof(menu[key]) === 'number'){
+         menu[key] = menu[key] * 2;
+         console.log(menu[key]);
+      }else{
+         null;
+      }
+   };
+};
+
+multiplyNumericTwo(menu);
+
+
+
+// if (n === 0 || m === 0 || n < 0 || m < 0) {
+//    return 'INVALID'
+// };
+// let counter = 0
+// for (let i = 1; i < m; i++) {
+//    let mulNumber = n * i;
+//    if (mulNumber % n === 0 && mulNumber < m) {
+//       counter += mulNumber;
+//    } else {
+//       continue;
+//    };
+// };
+// return counter;
+// }  
+
+
+games.forEach(function(item, i, arr){
+   let points = item.replace( ':', '');
+   //console.log(points);
+   x = +points.slice(0,1);
+   y = +points.slice(1,2);
+     console.log(x);
+     console.log(y);
+   if(x > y){
+     counter + 3;
+   }else if(x === y){
+     counter + 1;
+   };
+   console.log (counter)
+ });
