@@ -16,4 +16,68 @@ function multiplyNumeric(menu) {
 };
 
 multiplyNumeric(menu);  
+```  
+
+
+
+
+
+
+
+
+
+# Отладка кода  
+## debugger
+```javascript
+
+function getName () {
+   let name = alert('wasya');
+
+   debugger // приостанавливает выполнение кода
+   say(name);
+}
+
+```  
+# Строки
+## Переворот строки
+```javascript
+let str = 'hello world!'
+
+str.split('');// разбиваем строку на буквы и заносим в массив
+str.reverse(); // переворачиваем массив
+str.join(' ');// собираем из массива строчку
+console.log(str);// !dlrow olleh 
+```
+
+
+
+
+
+
+# Обьекты
+Создание независимой копии обьекта
+```javascript
+let a = {
+   name: 'wasya',
+   age: 30
+};
+let b = {}
+Object.assign(b,(a));
+console.log(b) // name wasya age 30
+```
+
+
+
+
+
+
+# Массивы
+Создание независимой копии массива
+
+```javascript
+let arrOne = [1, 2, 3];
+let arr = arrOne.slice();
+
+console.log(arr)// [1, 2, 3]
+
 ```

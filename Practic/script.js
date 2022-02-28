@@ -283,17 +283,46 @@ multiplyNumericTwo(menu);
 // }  
 
 
-games.forEach(function(item, i, arr){
-   let points = item.replace( ':', '');
-   //console.log(points);
-   x = +points.slice(0,1);
-   y = +points.slice(1,2);
-     console.log(x);
-     console.log(y);
-   if(x > y){
-     counter + 3;
-   }else if(x === y){
-     counter + 1;
-   };
-   console.log (counter)
- });
+// games.forEach(function(item, i, arr){
+//    let points = item.replace( ':', '');
+//    //console.log(points);
+//    x = +points.slice(0,1);
+//    y = +points.slice(1,2);
+//      console.log(x);
+//      console.log(y);
+//    if(x > y){
+//      counter + 3;
+//    }else if(x === y){
+//      counter + 1;
+//    };
+//    console.log (counter)
+//  });
+//  if(x > y){
+//    counter += 3;
+//  }else if(x === y){
+//    counter += 1;
+//  };  
+
+
+
+a = {
+   name: 'wasya',
+   age: 30
+};
+b = {}
+Object.assign(b,(a));
+console.log(b);  
+
+
+// function well(x) {
+//    let b = 0;
+//    for (let i = 0; i < x.length; i++) {
+//       console.log(x);
+//       if (x[i] === 'good') {
+//          ++b;
+//       }
+//    }
+//    return b === 0 ? 'Fail!' :
+//       (b === 1 || b === 2) ? 'Publish!' :
+//          (b > 2) ? 'I smell a series!' : null
+// }
