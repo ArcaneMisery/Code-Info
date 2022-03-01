@@ -325,4 +325,43 @@ console.log(b);
 //    return b === 0 ? 'Fail!' :
 //       (b === 1 || b === 2) ? 'Publish!' :
 //          (b > 2) ? 'I smell a series!' : null
+// }  
+// let pin = '1123'
+// let numbPin = (Number(pin));
+// console.log(typeof numbPin);
+// if (typeof Number(pin) === Number){
+//    console.log('it is num')
 // }
+
+let variable = '1234'
+console.log(variable == Number);
+console.log(typeof +variable === 'number');
+
+function validatePIN (pin) {
+   console.log(pin == Number)
+   let jet = typeof +pin;
+   console.log(jet);
+   console.log(typeof pin);
+   console.log(pin);
+   if (pin.length >= 4 && pin.legth <= 6 && jet === 'number'){
+     console.log(true);
+   }else{
+     console.log(false);
+   }
+ }
+
+validatePIN(`1234`);
+
+
+
+
+
+function validatePIN (pin) {
+  
+   let a = /^[0-9]+$/.test(pin);
+   if (pin.length >= 4 && pin.legth <= 6 && a == 1){
+     return true;
+   }else{
+     return false;
+   }
+ }
