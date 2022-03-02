@@ -364,4 +364,10 @@ function validatePIN (pin) {
    }else{
      return false;
    }
- }
+ }  
+
+ -4-2 -12-6;
+
+ let numssss = 10-(-10);
+ console.log(numssss);
+ -20 

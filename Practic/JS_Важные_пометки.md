@@ -64,7 +64,12 @@ console.log(str) // johN этот метод не меняет исходную 
 let newStr = str.toLowerCase() 
 console.log(newStr) // john теперь то что вернулось записалось в переменную
 let bigWord = str[0].toUppercase()
-console.log(bigWord) // J Вывело и присвоило в переменную лишь что то изменило
+console.log(bigWord) // J Вывело и присвоило в переменную лишь что то изменило  
+
+//        ВЫЧИСЛЕНИЯ ИЗ СТРОКИ ЧИСЛА СОГЛАСНО ИСПОЛЬЗУЕМОЙ СИСТЕМЫ ВЫЧИСЛЕНИЙ
+function parse (string) {
+ return parseInt(string, 16) // выведет передоваемую строку в функцию в числе шестнадцатиричной системы
+}
 ```
 
 
