@@ -39,8 +39,9 @@ function getName () {
 
 ```  
 # Строки
-## Переворот строки
+
 ```javascript
+//                          ПЕРЕВОРОТ СТРОКИ
 let str = 'hello world!'
 
 str.split('');// разбиваем строку на буквы и заносим в массив
@@ -49,13 +50,13 @@ str.join(' ');// собираем из массива строчку
 console.log(str);// !dlrow olleh   
 
 
-// Регулярные выражения для replace()
+//                        Регулярные выражения для replace()
 str.replace('!', '') // поменяет знак на пустую строку(удалит первый который найдет)
 str.replace(/!$/, '') // удалит последний ! /...$/ говорит удалить последнее вхождение
 str.replace(/!/g, '') // удалит все ! /.../g удаляет все вхождения  
 
 
-// действия с символами
+//                            ДЕЙСТВИЯ С СИМВОЛАМИ
 str.toLowerCase()// - переводит все символы в нижний регистр и возвращает получившуюся строчку
 str.toUpperCase()// - переводит в верхний регистр и возвращает строчку
 let str = 'johN'
@@ -69,6 +70,12 @@ console.log(bigWord) // J Вывело и присвоило в переменн
 //        ВЫЧИСЛЕНИЯ ИЗ СТРОКИ ЧИСЛА СОГЛАСНО ИСПОЛЬЗУЕМОЙ СИСТЕМЫ ВЫЧИСЛЕНИЙ
 function parse (string) {
  return parseInt(string, 16) // выведет передоваемую строку в функцию в числе шестнадцатиричной системы
+
+
+                          // ПРОВЕРКА СТРОКИ НА НАЛИЧИЕ
+let str = '21que';
+console.log(str.includes('21')) // true
+console.log(str.includes('21', 2))// false так как на позиции [2] нет 21.
 }
 ```
 
@@ -101,6 +108,14 @@ let arrOne = [1, 2, 3];
 let arr = arrOne.slice();
 
 console.log(arr)// [1, 2, 3]
+
+```
+Поиск чисел в массиве
+```javascript
+//находит наименьшее число в массиве
+Math.min.apply(null, numArr);
+// находитнаибольшее число в массиве
+Math.max.apply(null, numArr);
 
 ```
 
@@ -171,5 +186,31 @@ function abbrevName(name){
   var nameArray = name.split(" ");
   return (nameArray[0][0] + "." + nameArray[1][0]).toUpperCase();
 }
+
+
+
+//      MUSIC ENCODER
+
+https://www.codewars.com/kata/58db9545facc51e3db00000a/train/javascript
+
+function compress(music) {
+  let str = 0
+  let a
+  for (let i = 0; i < music.length; i++){
+    if(music[i] === music[i + 1]){
+      console.log(music[i]);
+      str = `${music[i]}*${music[i]}`;
+      a = music.splice(i, 1 + i, str);
+    }else if(music[i] === (music[i])){
+      console.log(music[i])
+      str = `${music[i]}-${music[i + i]}`;
+      music.splice(i, 1 + i, str);
+      }
+    };
+    console.log(music)
+  let answer = music.join(',');
+  console.log(answer)
+    return answer;
+  }
 
 ```

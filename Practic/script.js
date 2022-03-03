@@ -365,9 +365,48 @@ function validatePIN (pin) {
      return false;
    }
  }  
+ function solution(digits){
+   let numArr = [];
+   let newArr
+   for(let i = 0; i < digits.length; i++)
+     if (i > 9999 && i < 100000){
+       numArr.Push(i);
+     };
+   console.log(numArr);
+   return Math.max.apply(null, numArr);
+ }
+ console.log(solution('22222222222222222222222222222222'));
 
- -4-2 -12-6;
 
- let numssss = 10-(-10);
- console.log(numssss);
- -20 
+ function solution(digits){
+   let numArr = digits.split('')
+   let newArr = []
+   let search
+ for(let i = 0; i < numArr.length; i++){
+   search =  numArr[0 + i] + numArr[1 + i] + numArr[2 + i] + numArr[3 + i] + numArr[4 + i];
+   newArr.push(+search);
+   
+   console.log(+search);
+ }
+   console.log(newArr);
+   for(let i = 0; i < newArr.length; i++){
+     console.log(newArr[i]);
+     if(newArr[i] === NaN){
+        console.log(newArr[i]);
+       newArr.splice(i, 1);
+     }  
+   }
+   return Math.max.apply(null, newArr);
+ }
+console.log(solution('22222222222222'))
+ // https://www.codewars.com/kata/51675d17e0c1bed195000001/train/javascript  
+
+//  let answer = 0; // сюда присвоить ответ
+//  for(let i = 0; i < digits.length; i++){ перебор длинного числа
+//    let number = digits.substr(i, 5); идет по 5 символов один за другим и присваивает в number
+//    if(Number(number) > answer){  если числовой вариант number больше того что лежит в answer
+//  мы записываем туда новое 5 значное число
+//      answer = Number(number)
+//    }
+//  }
+//  return answer;
