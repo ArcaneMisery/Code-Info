@@ -378,27 +378,27 @@ function validatePIN (pin) {
  console.log(solution('22222222222222222222222222222222'));
 
 
- function solution(digits){
-   let numArr = digits.split('')
-   let newArr = []
-   let search
- for(let i = 0; i < numArr.length; i++){
-   search =  numArr[0 + i] + numArr[1 + i] + numArr[2 + i] + numArr[3 + i] + numArr[4 + i];
-   newArr.push(+search);
+//  function solution(digits){
+//    let numArr = digits.split('')
+//    let newArr = []
+//    let search
+//  for(let i = 0; i < numArr.length; i++){
+//    search =  numArr[0 + i] + numArr[1 + i] + numArr[2 + i] + numArr[3 + i] + numArr[4 + i];
+//    newArr.push(+search);
    
-   console.log(+search);
- }
-   console.log(newArr);
-   for(let i = 0; i < newArr.length; i++){
-     console.log(newArr[i]);
-     if(newArr[i] === NaN){
-        console.log(newArr[i]);
-       newArr.splice(i, 1);
-     }  
-   }
-   return Math.max.apply(null, newArr);
- }
-console.log(solution('22222222222222'))
+//    console.log(+search);
+//  }
+//    console.log(newArr);
+//    for(let i = 0; i < newArr.length; i++){
+//      console.log(newArr[i]);
+//      if(newArr[i] === NaN){
+//         console.log(newArr[i]);
+//        newArr.splice(i, 1);
+//      }  
+//    }
+//    return Math.max.apply(null, newArr);
+//  }
+// console.log(solution('22222222222222'))
  // https://www.codewars.com/kata/51675d17e0c1bed195000001/train/javascript  
 
 //  let answer = 0; // сюда присвоить ответ
@@ -410,3 +410,15 @@ console.log(solution('22222222222222'))
 //    }
 //  }
 //  return answer;
+
+
+
+for (let i = 0; i < xArr.length; i++) {
+   console.log(xArr[i])
+   for(let j = 0; j < arr_EN.length; j++){
+     if(xArr[i] === arr_EN[j]){
+       console.log(xArr[i])
+       xCount += ++j;
+     };  
+   }
+ }

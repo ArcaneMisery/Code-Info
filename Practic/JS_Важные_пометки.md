@@ -93,8 +93,23 @@ let a = {
 let b = {}
 Object.assign(b,(a));
 console.log(b) // name wasya age 30
-```
 
+
+```
+Задачи в которых не даны арггументы в функцию
+```javascript
+// для их решения нужно использовать обьект arguments
+// в него будут передаваться все данные
+//пример
+function sum() {
+  let sum = 0;
+  for(let i = 0; i < arguments.length; i++){
+    sum += arguments[i];
+  };
+  return sum;
+}
+console.log(sum(12, 1, 1, 1, 1, 1, 1)) // 18
+```
 
 
 
@@ -213,4 +228,64 @@ function compress(music) {
     return answer;
   }
 
+
+
+// function compress(music) {
+//   let comboStack = []
+//   let compressed = []
+//   console.log(music)
+//   for (let i = 0; i<music.length; i++) {
+//     let cur = music[i];
+//     if (comboStack.length < 2) {
+//       comboStack.push(cur)
+//     } else {
+//       // something is on the combostack, do something
+//       let prev = comboStack[comboStack.length-1];
+//       let prevPrev = comboStack[comboStack.length-2];
+//       if (prev === prevPrev) {
+//         if (cur === prev) {
+//           comboStack.push(cur)
+//         } else {
+//           compressed.push(comboStack[0]+'*'+comboStack.length)
+//           comboStack = [cur];
+//         }
+//       } else if (prev === prevPrev+1 || prev === prevPrev-1) {
+//         if (cur === prev+1 && prev === prevPrev+1) {
+//           comboStack.push(cur)
+//         } else if(cur === prev-1 && prev === prevPrev-1) {
+//           comboStack.push(cur)
+//         } else if (comboStack.length === 2) {
+//           compressed.push(''+comboStack.shift());
+//           comboStack.push(cur)
+//         } else {
+//           compressed.push(comboStack[0] + '-' + prev)
+//           comboStack = [cur]
+//         }
+//       } else {
+//         if (cur-prev === prev-prevPrev) {
+//           comboStack.push(cur)
+//         } else if (comboStack.length === 2) {
+//           compressed.push(''+comboStack.shift()); 
+//           comboStack.push(cur)
+//         } else {
+//           compressed.push(comboStack[0] + '-' + comboStack[comboStack.length-1]+'/'+Math.abs(prev-prevPrev))
+//           comboStack = [cur]
+//         }
+//       }
+//     }
+    
+//   }
+//   if(comboStack.length &&comboStack[0] === comboStack[1]) {
+//     compressed.push(comboStack[0]+'*'+comboStack.length)
+//     comboStack = []
+//   } else if (comboStack.length > 2 && Math.abs(comboStack[0]-comboStack[1]) === 1) {
+//     compressed.push(comboStack[0] + '-' + comboStack[comboStack.length-1])
+//     comboStack = []
+//   } else if (comboStack.length > 2) {
+//     compressed.push(comboStack[0] + '-' + comboStack[comboStack.length-1]+'/'+Math.abs(comboStack[0]-comboStack[1]))
+//     comboStack = []
+//   }
+//   compressed.push(...comboStack)
+//   return compressed.join(',');
+// }
 ```
