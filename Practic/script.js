@@ -413,12 +413,15 @@ function validatePIN (pin) {
 
 
 
-for (let i = 0; i < xArr.length; i++) {
-   console.log(xArr[i])
-   for(let j = 0; j < arr_EN.length; j++){
-     if(xArr[i] === arr_EN[j]){
-       console.log(xArr[i])
-       xCount += ++j;
-     };  
-   }
- }
+// for (let i = 0; i < xArr.length; i++) {
+//    console.log(xArr[i])
+//    for(let j = 0; j < arr_EN.length; j++){
+//      if(xArr[i] === arr_EN[j]){
+//        console.log(xArr[i])
+//        xCount += ++j;
+//      };  
+//    }
+//  }
+
+
+ //return (Math.floor(Date.parse(date)) / 1000 === (Math.floor((Math.floor(Date.now(date)) / 1000)))) ? true : false
