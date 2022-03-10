@@ -424,4 +424,12 @@ function validatePIN (pin) {
 //  }
 
 
- //return (Math.floor(Date.parse(date)) / 1000 === (Math.floor((Math.floor(Date.now(date)) / 1000)))) ? true : false
+
+//return (Math.floor(Date.parse(date)) / 1000 === (Math.floor((Math.floor(Date.now(date)) / 1000)))) ? true : false
+let arr = ["a", "b"];
+
+arr.push(function() {
+  alert( this );
+})
+
+arr[2]();
