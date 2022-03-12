@@ -203,8 +203,30 @@ function abbrevName(name){
 }
 
 
+// bread sendwich 6 dan
+// мое решение
+https://www.codewars.com/kata/622a6a822494ab004b2c68d2/solutions/javascript
 
-//      MUSIC ENCODER
+// сокращенное
+function slicesToName(n) {
+  if (!(n >= 2)) return null;
+  let r = new Array(Math.floor(n / 2)).fill("sandwich");
+  return n % 2 ? ["bread", ...r].join(" ") : r.join(" ");
+}
+function nameToSlices(name) {
+  return String(name)
+    .split(" ")
+    .reduce((a, c, i, arr) => {
+      if (a === null) c = null;
+      if (c === "bread" && i === 0 && arr.length !== 1) return (a += 1);
+      return c === "sandwich" ? (a += 2) : (a = null);
+    }, 0);
+}
+
+
+
+
+//      MUSIC ENCODER 5 dan
 
 https://www.codewars.com/kata/58db9545facc51e3db00000a/train/javascript
 
