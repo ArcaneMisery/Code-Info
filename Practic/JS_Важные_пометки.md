@@ -310,4 +310,40 @@ function compress(music) {
 //   compressed.push(...comboStack)
 //   return compressed.join(',');
 // }
+
+//  --------------------------------------------------------------------------------
+function isNice(arr){
+  if(arr <= 1){return false}
+  let isNice;
+  for(let i = 0; i < arr.length; i++) {
+    for (let j = 0; j < arr.length; j++) {
+      if(i === j){continue}
+      
+       if(arr[i] + 1 === arr[j] || arr[i] - 1 === arr[j]) {
+         isNice = true;
+         console.log(arr[i])
+         break;
+        }
+    }
+    if (!isNice) {
+      return false;
+    }
+  }
+  return true;
+}
+
+function isNice(arr){
+  if (arr.length <= 0) {
+    return false;
+  }
+  const result = arr.every((item) => {
+    return arr.some((current) => {
+      return item === current + 1 || item === current - 1;
+    });
+  });
+  return result;
+}
+
+
+
 ```
