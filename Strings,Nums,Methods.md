@@ -1153,3 +1153,251 @@ john = null;
 
 // структура данных visitedSet будет очищена автоматически
 ```
+# Object keys values entries  как изменяющие обьект методы  
+Object.keys(obj);  
+Вызывая таким образом метод получаю его реасльный массив, дальше можно использовать методы массива а после вернуть обратно в обьектный тип  
+```javascript
+let user = {
+  name: "John",
+  age: 30
+};
+
+// перебор значений
+for (let value of Object.values(user)) {
+  alert(value); // John, затем 30
+}
+```
+<details><summary>Object.keys/values/entries игнорируют символьные свойства(Symbol)</summary>  
+
+Если нужно учесть и символы, использовать метод Object.getOwnPropertySymbols, вернет массив лишь символов, либо Reflect.ownKyes(obj) вернет все ключи.
+
+</details>  
+
+## Трансформация обьекта как массива  
+Для этого нужно  
+1. Вызов Object.entries(obj) возвращает массив пар ключ/значение для obj.  
+2. На нем вызвать метод массив.
+3. Использовать Object.fromEntries чтобы обратно преобразовать в обьект
+
+```javascript
+let prices = {
+  banana: 1,
+  orange: 2,
+  meat: 4,
+};
+let doublePrices = Object.fromEntries(
+  // преобразовать в массив, затем map, затем fromEntries обратно объект
+  Object.entries(prices).map(([key, value]) => [key, value * 2])
+);
+
+alert(doublePrices.meat); // 8
+```
+# Деструктурирующее присваивание   
+Деструктуризация - это 'распаковка' обьекта в кучу переменных.
+## Деструктуризация массива
+```javascript
+let arr = [1 , 2];
+let [one, two] = arr;
+console.log(one) // 1
+console.log(two) // 2
+```  
+Теперь вместо ключей данные сложены в переменную  
+**ГЛАВНАЯ ЗАДАЧА ДЕСТРУКТУРИЗАЦИИ ЭТО КОПИРОВАНИЕ ДАННЫХ В ПЕРЕМЕННЫЕ**  
+```javascript
+// можно проспустить переменную используя запятую
+let [one, ,two] = [1, 3, 2];
+console.log(two) // 2
+
+// можно использовать любой перебираемый обьект не только массив
+let [a, b, c] = 'abc';
+let [one, two, three, four] = new Set([1, 2, 3, 4]);
+
+// можно использовать все что угодно присваивающие слево
+let user = {};
+[user.name, user.surname] = "Ilya Kantor".split(' ');
+
+alert(user.name); // Ilya  
+
+// цикл с entries()
+let user = {
+  name: 'john',
+  age: 30
+};
+for (let [key, value] of Object.entries(user)) {
+  console.log(`${key}:${value}`);
+}
+
+// для обьекта Map
+let user = new Map();
+user.set('name', 'john');
+user.set('age', '30');
+for(let [key, valuie] of user) {
+  console.log(`${key}:${value}`);
+}
+```
+## Остаточные параметры ... (вечно непонятное трехточие)
+... используется чтобы не только получить первые значения, но и собрать все остальные, добовляется еще один **параметр** ...
+```javascript
+let [name1, name2, ...rest] = ["Julius", "Caesar", "Consul", "of the Roman Republic"];  
+console.log(name1); // Julius
+console.log(name2); // Caesar
+console.log(rest[0]); // Consul
+console.log(rest[1]); // of the Roman Republic
+// в rest включились все остальные данные
+console.log(rest.length) // 2
+
+//   ТАКАЯ ПЕРЕМЕННАЯ С ТОЧКАМИ ДОЛЖНА ОБЯЗАТЕЛЬНО СТОЯТЬ НА ПОСЛЕДНЕМ МЕСТЕ В ДЕСТРУКТУРИРУЮЩЕМ ПРИСВАИВАНИИ
+```
+### значения по умолчанию
+Если значений меньше чем переменных, ошибки не будет
+```javascript
+
+let [firstName, surname] = [];
+
+alert(firstName); // undefined
+alert(surname); // undefined
+
+// если нужно указать значения по умолчанию то ихз надо присвоить
+let [name = 'Guest', surname = 'Anonymous'] = ['Julious'];
+// Значения по умолчанию могут быть сложнее и даже быть функциями к примеру
+let [name = prompt('name?'), surname = prompt('surname?')] = ["Julius"];
+```  
+## Деструктуризация обьекта  
+так же работает с обьектами ``let {var1, var2} = {var1..., var2...}``
+справа готовый обьект с лево переменный слжащие шаблонами для свойств
+```javascript
+let options = {
+  title: 'menu',
+  width: 100,
+  height: 200
+};
+let {title, width, height} = options;
+console.log(title, width, height); // Menu 100 200
+// Свойства options.title, options.width и options.height присваиваются соответствующим переменным  
+// можно записать по другому
+let {height, width, title} = { title: "Menu", height: 200, width: 100 };
+
+// если нужно присвоить свойство обьекта переменной с другим названием, например свойство options.width присвоить переменной w можно использовать двоеточик
+let {width: w, height: h, title} = options
+// width -> w
+// height -> h
+// title -> title
+
+alert(title);  // Menu
+alert(w);      // 100
+alert(h);      // 200
+
+// так же можно занести свойства по умолчанию 
+let options = {
+  title: 'Menu'
+};
+let {width = 100, hieght = 200, title} = options;
+// как и с массивами можно ставить и функции и прочее в щначения по умолчанию
+let options = {
+  title: "Menu"
+};
+let {width = prompt("width?"), title = prompt("title?")} = options;
+
+// Можно совмещать двоеточие и присваивание
+let {width: w = 100, height: h = 200, title} = options;  
+
+// Если имеется большой обьект с множеством свойств, можно взять только то что нужно
+let options = {
+  title: "Menu",
+  width: 100,
+  height: 200
+};
+let {title} = options;
+console.log(title) // Menu
+```  
+## Остаток обьекта ...
+Так же как и в массиве
+```javascript
+let options = {
+  title: "Menu",
+  width: 100,
+  height: 200
+};  
+let {title, ...rest} = options;
+//rest={height: 200, width: 100}
+console.log(rest.height) // 200
+console.log(rest.width) //100
+```
+## Вложенная деструктуризация  
+О том что обьект содержит вложенные свойства и обьекты, нужно использовать более сложную деструктуризацию
+```javascript
+let options = {
+  size: {
+    width: 100,
+    height: 200
+  },
+  items: ["Cake", "Donut"],
+  extra: true
+};
+
+let {
+  size: { // отдельно переменные для size
+    width,
+    height
+  },
+  items: [item1, item2], // элементы к item
+  title = 'menu' // добовлено значение по умолчанию
+} = options;
+
+alert(title);  // Menu
+alert(width);  // 100
+alert(height); // 200
+alert(item1);  // Cake
+alert(item2);  // Donut
+```
+## Умные параметры функциё
+Бывают функции которые создают много параметров к примеру функция создающая пользовательский интерфейс.Записывать их в следующем виде плохая практика
+```javascript
+function showMenu(title = "Untitled", width = 200, height = 100, items = []) {
+  // ...
+}
+// чтобы сделать эту запись адекватной нужно передать параметры как обьект .
+//передача обьекта в функцию
+let options = {
+  title: 'my Menu',
+  items: ['item1', 'item2']
+};
+function showMenu ({title = 'Untitled', width = 200, height = 100, items = []}) {
+  // title, items – взято из options,
+  // width, height – используются значения по умолчанию
+  alert( `${title} ${width} ${height}` ); // My Menu 200 100
+  alert( items ); // Item1, Item2
+}
+showMenu(options);
+// так как же как и до можно использовать еще более сложное деструктурирование со вложенными обьектами доветочием и присваеванием
+
+let options = {
+  title: "My menu",
+  items: ["Item1", "Item2"]
+};
+
+function showMenu({
+  title = "Untitled",
+  width: w = 100,  
+  height: h = 200, // height присваиваем в h
+  items: [item1, item2] // первый элемент items присваивается в item1, второй в item2
+}) {
+  alert( `${title} ${w} ${h}` ); // My Menu 100 200
+  alert( item1 ); // Item1
+  alert( item2 ); // Item2
+}
+
+showMenu(options);
+```
+**ВАЖНО**, при использоввании такого подхода функция подразумевает передачу обьекта, если не нужно передавать никаких аргументов стоит передать пустой обьект ``showMenu({}){};``  
+Можно это оптимизировать используя пустой обьект значением по умолчанию для обьекта параметров
+```javascript
+function showMenu({ title = "Menu", width = 100, height = 200 } = {}) {
+  alert( `${title} ${width} ${height}` );
+}
+showMenu(); // Menu 100 200
+```
+
+
+
+
