@@ -1540,4 +1540,212 @@ let date = new Date( Date.parse('2012-01-26T13:51:50.417-07:00') );
 
 alert(date);
 ```
+# Формат JSON метд toJSON  
+**JSON (JavaScript Object Notation)** это общий формат представления значений и обьектов. Первоначально он был создан для js, но многие другие языки так же имеют библиотеки, которые могут работать с ним. **JSON используют для обмена данными когда клиент написан на JS а сервер поддерживает другой язык**  
+## JSON.stringify  
+JS предоставляет методы   
++ JSON.stringify для преобразования обьектов в JSON 
++ JSON.parse для преобразования JSON Обратно в обьект  
+  
+```javascript
+let student = {
+  name: 'John',
+  age: 30,
+  isAdmin: false,
+  courses: ['html', 'css', 'js'],
+  wife: null
+};
 
+let json = JSON.stringify(student);
+console.log(typeof json) // string
+
+console.log(json)
+/* выведет объект в формате JSON:
+{
+  "name": "John",
+  "age": 30,
+  "isAdmin": false,
+  "courses": ["html", "css", "js"],
+  "wife": null
+}
+*/
+```
+полученные строки json называются сериализированным обьектом.  
+Обьект в формате JSON имеет важные отличия.  
++ Строки используют **только** двойные кавычки "".
++ имена свойств обьектов так же заключаютсяв кавычки "age":30  
+  
+JSON.stringify применяется к примитивам и поддерживает след типы данных
++ Обьекты {}
++ Массивы []
++ Примитивы
+  + строки
+  + числа
+  + булевые
+  + null
+
+```javascript
+// число в JSON остаётся числом
+alert( JSON.stringify(1) ) // 1
+// строка в JSON по-прежнему остаётся строкой, но в двойных кавычках
+alert( JSON.stringify('test') ) // "test"
+alert( JSON.stringify(true) ); // true
+alert( JSON.stringify([1, 2, 3]) ); // [1,2,3]
+```
+JSON пропускает некоторые св-ва обьектов 
++ свойства-функции (методы)
++ Символьные, свойства
++ Свойства, содержащие undefined  
+
+Это считается нормой, но если нужно это учитывать, это можно настроить.  
+Вложенные обьекты поддержива.тся и так же конвертируются.  
+
+**Важное ограничение не должно быть циклических ссылок**
+```javascript
+let room = {
+  number: 23
+};
+let meetup = {
+  title: "Conference",
+  participants: ["john", "ann"]
+};
+meetup.place = room;       // meetup ссылается на room
+room.occupiedBy = meetup; // room ссылается на meetup
+JSON.stringify(meetup); // Ошибка: Преобразование цикличной структуры в JSON
+```
+## Исключение и преобразование: replacer  
+полный синтаксис JSON.stringify ``JSON.stringify(value, [replacer, space])``  
+**value** значение для кодирования.  
+**replacer** массив свойств для кодирования либо функция соответсвия ``function(key, value)``.  
+**space** - Доп пространство (отступы), для форматирования. 
+
+В большинстве случаев метод используется только с value, но если нужно настроить процесс замены, к примеру отфильтровать циклические ссылки, то нужно использовать второй аргумент replacer.  
+```javascript
+let room = {
+  number: 23
+};
+let meetup = {
+  title: "Conference",
+  participants: [{name: "John"}, {name: "Alice"}],
+  place: room // meetup ссылается на room
+};
+room.occupiedBy = meetup; // room ссылается на meetup
+console.log( JSON.stringify(meetup, ['title', 'participants']) );
+// {"title":"Conference","participants":[{},{}]}
+// Список свойств применяется ко всей структуре объекта. Так что внутри participants – пустые объекты, потому что name нет в списке.
+
+// если закинуть туда все переменные можно практически решить проблему
+let room = {
+  number: 23
+};
+let meetup = {
+  title: "Conference",
+  participants: [{name: "John"}, {name: "Alice"}],
+  place: room // meetup ссылается на room
+};
+room.occupiedBy = meetup; // room ссылается на meetup
+console.log( JSON.stringify(meetup, ['title', 'participants', 'place', 'name', 'number']) );
+/*
+{
+  "title":"Conference",
+  "participants":[{"name":"John"},{"name":"Alice"}],
+  "place":{"number":23}
+}
+*/
+
+// Список свойств довольно длинный и occupiedBy не сериализованно, для оптимизации и реализации следует записать функцию function(key, value)
+console.log( JSON.stringify(meetup, function replacer(key, value) {
+  alert(`${key}: ${value}`);
+  return (key == 'occupiedBy') ? undefined : value;
+}));
+// функция вызывается для каждой пары и возвращает замененное значение, которое будет вмместо исходного либюо undifined чтобы пропустить значение 
+```
+replacer применяется рекурсивно со значением this.  
+В первый вызов передаётся обьект-обёртка {"": meetup}  
+## Форматирование space
+space - количество пробелов для удобного форматирования, используются они только для удобности чтения
+```javascript
+let user = {
+  name: "John",
+  age: 25,
+  roles: {
+    isAdmin: false,
+    isEditor: true
+  }
+};
+console.log(JSON.stringify(user, null, 2));
+/* отступ в 2 пробела:
+{
+  "name": "John",
+  "age": 25,
+  "roles": {
+    "isAdmin": false,
+    "isEditor": true
+  }
+}
+*/
+/* для JSON.stringify(user, null, 4) результат содержит больше отступов:
+{
+    "name": "John",
+    "age": 25,
+    "roles": {
+        "isAdmin": false,
+        "isEditor": true
+    }
+}
+*/
+```
+## Пользовательский «toJSON»
+Представляет такой же метод как toString только toJSON, JSON.stringify автоматом вызывает его если он есть.
+```javascript
+let room = {
+  number: 23,
+  toJSON() {
+    return this.number;
+  }
+};
+let meetup = {
+  title: "Conference",
+  room
+};
+alert( JSON.stringify(room) ); // 23
+
+alert( JSON.stringify(meetup) );
+/*
+  {
+    "title":"Conference",
+    "room": 23
+  }
+*/
+```
+Используется просто как отдельный, но основной метод.
+## JSON.parse   
+Нужен чтобы декодировать строку обратно.
+``let value = JSON.parse(str, [reviver])``  
+**str** - JSON для преобразхзования в обьект.  
+**reviver** - Необязательная функция для каждой пары (ключ, значение), может преобразовывать значение.
+```javascript
+// строковый массив
+let numbers = "[0, 1, 2, 3]";
+numbers = JSON.parse(numbers);
+console.log( numbers[1] ); // 1
+
+let user = '{ "name": "John", "age": 35, "isAdmin": false, "friends": [0,1,2,3] }';
+user = JSON.parse(user);
+console.log( user.friends[1] ); // 1
+```
+### reviver
+Очень полезен при работе с специализированными обьектами 
+```javascript
+// обычным образом через parse
+// title: (meetup title), date: (meetup date)
+let str = '{"title":"Conference","date":"2017-11-30T12:00:00.000Z"}';
+let meetup = JSON.parse(str);
+console.log( meetup.date.getDate() ); // Error!
+// ошибка связана с тем что JSON не понимает что это специальный обьект Date, поэтому нужно использовать функцию
+let meetup = JSON.parse(str, function(key, value){
+  if (key == 'date') return new Date(value);
+  return value;
+});
+console.log( meetup.date.getDate() ); // 30   
+```
