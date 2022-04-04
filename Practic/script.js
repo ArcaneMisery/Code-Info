@@ -170,7 +170,7 @@ for (let i = 0; i < 3; i++) {
       i++; 
    }
 for(let i = 0; ;i++ ){
-   let a = +prompt(`Введите число больше 100`, ``);
+   let a = 2;
    if(a > 100 || a == 0)break;
 }
 
@@ -209,7 +209,7 @@ function min (a, b){
 
 function pow (x, n){
    if (n < 1 || n % 1 !== 0){
-      return alert(`Число не натурально!`);
+      // return alert(`Число не натурально!`);
    };
    
    let degree = x ** n;
@@ -221,9 +221,9 @@ let user = {
    name: `Admin`,
    age: 30
 }
-alert(user.age);
-delete user.age;
-alert(user.age);  
+// alert(user.age);
+// delete user.age;
+// alert(user.age);  
 //---------------------------------------------------------------
 
 
@@ -429,7 +429,7 @@ function validatePIN (pin) {
 let arr = ["a", "b"];
 
 arr.push(function() {
-  alert( this );
+  console.log( this );
 })
 
 arr[2]();

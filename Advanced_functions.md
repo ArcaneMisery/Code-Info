@@ -364,6 +364,101 @@ hash(1, 2);
 4. добавить x и this[1]
 5. добавить x и this[2]
 6. выполняется до тех пор пока this.length не будет склеена
-7. Вернуть result
+7. Вернуть result  
+  
+# Привязка контекста к функции  
+Тема дополнение, нужно во время потери контекстав this в момент передачи обьектов из функций в функцию  
+```javascript
+let user = {
+  firstName: "Вася",
+  sayHi() {
+    alert(`Привет, ${this.firstName}!`);
+  }
+};
+setTimeout(user.sayHi, 1000); // Привет, undefined!
+```
+передача обьекта user, функции sayHi, в функцию settimeout  
+Происходит на примере таймаута это потому что в this таймаута передалась this = window, и при вызове this пытается обратиться как window.firstname, чего не существует.  
+## Решение рпоблемы 1. Функция обёртка  
+Оборачивание функции в анонимную функция создав замыкание.  
+```javascript
+let user = {
+    firstName: "Вася",
+  sayHi() {
+    alert(`Привет, ${this.firstName}!`);
+  }
+}
 
+setTimeout(function() {
+  user.sayHi();
+}, 1000);
+setTimeout(() => user.sayHi(), 1000); // Привет, Вася!
+///////////////////////////////////////////////////////////////////
+
+
+// ...в течение 1 секунды
+user = { sayHi() { alert("Другой пользователь в 'setTimeout'!"); } };
+```  
+обьект user Достаётся из замыкания затем вызывая метод sayhi.  
+Однако теперь появилась проблема, если за время таймаута произойдёт изменение обьекта, вернётся не нужное значение обьекта(вася), а поменяное.  
+## Решение 2. Привязка при помощи bind 
+Метод bind позволяет зафиксировать this.  
+``let boundFunc = func.bind(context)``  
+Результатом вызова является особый обьект, который вызывается как функция и передаёт вызов в func, при этом устанавливая this = context.
+```javascript
+let user = {
+  firstName: "Вася"
+};
+function func() {
+  alert(this.firstName);
+}
+// в funcuser запоминается текущее this
+let funcUser = func.bind(user);
+funcUser(); // Вася
+```  
+Рещение проблемы
+```javascript
+let user = {
+  firstName: "Вася",
+  sayHi() {
+    alert(`Привет, ${this.firstName}!`);
+  }
+};
+let sayHi = user.sayHi.bind(user); // привязка метода sayhi
+sayHi(); // Привет, Вася!
+setTimeout(sayHi, 1000); // Привет, Вася!
+// передались параметры setTimeout но контекст бинда this остался неизменным
+```  
+## Частичное применение  
+Полный функционал bind заключается еще и в привязке каких либо аргументов, т.е. полный синтаксис будет ``func.bind(context, [arg1], [arg2], ...)``
+```javascript
+// функция умножения на 2
+function mul(a, b) {
+  return a * b;
+}
+let double = mul.bind(null, 2)
+console.log(double(3)) // mul(2, 3) = 6
+```
+вызов null.bind(null, 2); создаёт новую функцию double которая передаёт вызов mul задавая фиксируя null как контекст и 2 как первый аргумент, остальное передаётся как есть.  
+Польза от таких манипуляций когда нужно создать независимую функцию повсеместно применимую с одинаковыми аргументами.
+## Частичное применнение без контекста 
+Задача стоит в фиксировании аргументов без контекста this, во встроенном bind так сделать нельзя, все сделать можно только в ручную  
+```javascript
+// функция - фиксатор аргументов 
+function partial(func, ...argsBound) {
+  return function(...args){
+    return func.call(this, ...argsBound, ...args);
+  }
+}
+let user = {
+  firstName: "John",
+  say(time, phrase) {
+    alert(`[${time}] ${this.firstName}: ${phrase}!`);
+  }
+};
+
+user.sayNow = partial(user.say, new Date().getHours() + ':' + new Date().getMinutes());
+user.sayNow('hi');
+// [10:00] John: hi!
+```
 
