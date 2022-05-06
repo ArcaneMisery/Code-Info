@@ -297,4 +297,8 @@ function getDateAgo(date, days) {
   console.log(day)
   return new Date(Math.floor(ago / 365), Math.floor(year / 30)-1, day)
 }
-console.log(getDateAgo(dateAgo, 300))
+console.log(getDateAgo(dateAgo, 300));
+
+
+
+
