@@ -153,21 +153,31 @@ Math.max.apply(null, numArr);
 # На разбор
 
 ```javascript
-const modifiedSum = (a, n) => a.reduce((sum, e) => sum + e ** n - e, 0)
-
-const modifiedSum = (a, n) => a.reduce((a,v) => a + v ** n, 0) - a.reduce((a,v) => a + v, 0)
-
-
-function modifiedSum(a, n) {
-  let degreeCounter = 0
-  let minusCount = 0
-  a.forEach(function (item, i, arr) {
-     degreeCounter += item ** n;
-     minusCount += item;
-  });
-  return degreeCounter - minusCount;
+https://www.codewars.com/kata/58ee4db3e479611e6f000086/train/javascript
+function bitMarch (n) {
+	let a = [0,0,0,0,0,0,0,0];
+  let ans = [];
+  for(let i = 0; i < n; i++){
+    a.shift()
+    a.unshift(1);
+  }
+  console.log(a)
+  while(a[7] !== 1){
+//     console.log(a)
+    for(let i = 0; i < a.length; i++ ){
+      if(a[i] === 1){
+        a.splice(i, 1, 0)
+        a.splice(i+1, 1, 1)
+        console.log(a)
+        i++;
+      }
+    }
+     ans.push(a)
+  }
+  console.log(ans);
+  return ans
 }
-//--------------------------------------------------------------------
+// WHY DOES NOT WORK??????? -----------------------------------------------------------------------------------------------------
 
 
 function validatePIN (pin) {
