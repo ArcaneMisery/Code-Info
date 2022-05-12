@@ -390,7 +390,234 @@ let results = await Promise.all([
   fetch(url1), fetch(url2)
 ]);
 ```  
-В случае ошибки сначало срабатывает все как в promise.all а позже генерируется исключение как в await
+В случае ошибки сначало срабатывает все как в promise.all а позже генерируется исключение как в await  
+<hr/>
+<hr/>  
+
+# Генераторы  
+Обычный return в обычных function вернет 1 значение, когда function* генераторы yield вернет множество значений одно за другим.  
+## Функции генераторы  
+```javascript
+function* generateSequance () {
+  yield 1;
+  yield 2;
+  return 3
+}
+let generator = generateSequence();
+alert(generator); // [object Generator]
+```
+Функции генераторы не выполняют свой код, а возвращают спец обьект - генератор, для управления своим выполнением.    
+Основной метод генератора  - next(), при вызове запускает выполнение кода до ближайшего ``yield <значение>``(если значения нет - undefined), По достижении yield выполнение приостанавливается , а значение возвращается во внешний код.  
+Результат метода next() - обьект с 2 свойствами  
+- value: - значение из yield
+- done: true - если выполнение завершено, иначе false  
+
+```javascript
+function* generateSequence() {
+  yield 1;
+  yield 2;
+  return 3;
+}
+
+let generator = generateSequence();
+let one = generator.next();
+console.log(JSON.stringify(one)); // {value: 1, done: false}ж
+let two = generator.next();
+alert(JSON.stringify(two)); // {value: 2, done: false}
+let three = generator.next();
+alert(JSON.stringify(three)); // {value: 3, done: true}
+```
+Выполнение функции приостановленно на 2 строке - потому и false, следующий next() выполнит 2 строку и переступит на 3, и третий вызов завершит выполнение сделав done: true.  
+Генератор полностью выполнен , можно обработать конечный результат value.  
+## Перебор генераторов  
+Генераторы являются перебираемыми обьектами
+```javascript
+function* generateSequence() {
+  yield 1;
+  yield 2;
+  return 3;
+}
+let generator = generateSequence();
+for(let value of generator){
+  console.log(value) // 1 2 
+}
+// перебор не вернет последнее значение 3 тк done : true . ессли поменять return на yield done: false , values - 1 2 3  
+
+// Можно использовать весь функционал связанный с перебираемым обьектами  
+let sequence = [0, ...generateSequence()];
+alert(sequence); // 0, 1, 2, 3
+```
+## Генераторы для перебора обьектов  
+Для перебора обьектов теперь не нужна создавать  кучу свойств и функции достаточно все похожие действия помостить в функцию генератор фнутри обьекта  
+```javascript
+let range = {
+  from: 1,
+  to: 5,
+
+  *[symbol.iterator]() {
+    for(let value = this.from; value <= this.to; value++>) {
+      yield value
+    } 
+  }
+}
+
+console.log(...range) // [1 2 3 4 5]
+```
+Метод next() так же сохранился и весь прочий функционал в частности.  
+## Композиция генераторов 
+это особенная возможность генераторов, которая позволяет прозрачно «встраивать» генераторы друг в друга.  
+```javascript
+function* generatesequance() {
+  for(let i = start; i <= end; i++){
+    yield i;
+  }
+}
+function* generateSmth (){
+  yield* generateSequance(48, 57);
+  yield* generateSequance(65, 90);
+  yield* generateSequance(97, 122);
+}
+let str = '';
+for(let code of generateSmth){
+  str += String.fromCharCode(code)
+}
+console.log(str)// 0..9A..Za..z
+```
+Особый синтаксис yield* позволяет вкладывать генераторы друг в друга на автомате сохраняя промежуточные результаты в общей функции генераторе .  
+Директива yield* делегирует выполнение другому генератору  
+ ## Универсальность и гибкость yield  
+ yield  не только возвращает результаты, но и может передать результат внутрь фукнции.  
+ Для этого нужен вызов generator.next(arg) некст с аргументом, жтот аругмент будет результатом yield  
+ ```javascript
+function* gen(){
+  let result = yield '2 + 2 = ?'
+  console.log(result)
+}
+let generator = gen();
+let auestion = generator.next().value; yield вернул значение
+generator.next(4) // передача результата в генератор
+ ```
+ Результат первого выхзова yield - '2 + 2 = ?' далее yield выходит во внешний код в переменную question, а след действием происходит выхов next(4) и 4 выходит из присваивания в результат.  
+ ### В отличие от обычных функций генератор может обмениватся значениями с внешним кодом  
+ ## Generator.throw  
+ Как значение в генератор можно и передать ошибку
+ ```javascript
+functon* gen() {
+  try {
+    let result = yield '2 + 2 = ?'
+    console.log('код не дойдет до этой строки')
+  }catch(e) {
+    console.log(e)
+  }
+}
+let generator = gen();
+let auestion = generator.next().value;
+generator.throw(new Error('Ответа не найден'))
+ ```
+ Ошибка пробрасывается как результат выполнения и поэтому выполнение сразу переходит в блок catch
+ошибку так же можно отловить и во внешнем коде
+```javascript
+function* generate() {
+  let result = yield "2 + 2 = ?"; // Ошибка в этой строке
+}
+
+let generator = generate();
+
+let question = generator.next().value;
+
+try {
+  generator.throw(new Error("Ответ не найден в моей базе данных"));
+} catch(e) {
+  alert(e); // покажет ошибку
+}
+```  
+# Асинхронные итераторы и генераторы  
+Асинхронные итераторы позволяют перебирать данные поступающие асинхронно
+## Асинхронные итераторы  
+Похожи на обычные но имеют некоторые синтаксические отличия  
+Чтобы сделать обьект итерируемым асинхронно нужно 
+1. Использоать Symbol.asyncIterator вместо Symbol.iterator  
+2. next() - возвращает промис  
+3. Чтобы перебрать такой обьект используется цикл for await(let item of iterable)
+
+Пример
+```javascript
+let range = {
+  from: 1,
+  to: 5,
+  // for await вызовет этот метод лишь 1 раз
+  [Symbol.asyncIterator]() {
+    // 1 возвращение обьект итератор
+    //2 for await работает только с этим обьектом
+    // 3 запрашивает у него след значения вызовом next()
+    return {
+      current: this.from,
+      last: this.to,
 
 
+      async next() {
+        await new Promise(resolve => setTimeout(resolve, 1000));
 
+        if(this.current <= this.last){
+          return { done:false, value: this.current++};
+        }else{
+          return {done: true}
+        }
+      }
+    }
+
+  }
+}
+(async () => [
+  for await (let value of range){
+    console.log(value);
+  }
+])()
+```  
+Метод next() не обязательно должен быть асинхронным тут асинхронность в нем по причине ожидиния таймаута в 1 секунду  
+### Оператор расширения ``console.log([...range])`` не работает асинхронно, вызовет ошибку  
+## Асинхронные генераторы  
+В обычных генераторах нельзя использовать асинхронность, и в цикле перебора for of нет места await  
+Синтаксис для асинхронной работы  
+```javascript
+async function* generateSequance (start, end) {
+  for (let i = start; i <= end; i++){
+
+    yield i;
+  }
+
+}
+let generator = generateSequance(1, 5)
+(async () => {
+  for await (let value of generator){
+    console.log(value)
+  }
+})();
+```
+Добовляется async к самому генератору, оборачивается в async вызов for of, после for добовляется await. Так же теперь появился метод next() возвращающий промисы =>  
+``result = await generator.next()`` result = {value: ..., done: true;}  
+## Асинхронно перебираемые обьекты  
+Теперь используя все описанное выше можно перебрать асинхронно обьект в разы проще  
+```javascript
+let range = {
+  from: 1,
+  to: 5,
+
+  async *[Symbol.asyncInerator]() {
+    for(let value = this.from; value <= this.to; value++){
+      
+      await new Promise(resolve => setTimeout(resolve, 1000));
+      yield value
+    }
+  }
+}
+
+(async => [
+  for await (let value of range){
+    console.log(value)
+  }
+])();
+```
+Пример использования в реальной практике  
+https://learn.javascript.ru/async-iterators-generators#primer-iz-realnoy-praktiki  
+p.s. в нем есть недочеты(смотри комменты)
