@@ -348,7 +348,7 @@ const element = document.getElementById('#some-id')
   
   Аудио
 ```html
-<audio controls><!--  Вставка адио, атрибут controls обязателен, тег имеет строчный формат, свои элементы управления можно создать с помощью джавы -->
+<audio controls><!--  Вставка адио, атрибут controls обязателен, тег имеет строчный формат, свои элементы управления можно создать с помощью js -->
   <source src="audio.mp3" type="audio/mpeg">
   <source src="audio.ogg" type="audio/ogg">
   <p>
