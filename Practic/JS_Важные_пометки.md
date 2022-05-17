@@ -144,6 +144,15 @@ Math.min.apply(null, numArr);
 // находитнаибольшее число в массиве
 Math.max.apply(null, numArr);
 
+```  
+### формирование массива из заданного количества элементов и состоящего из них
+```javascript
+let arrPush = () => {
+  return [...Array(n)].map((x, i) => i + 1)
+}
+// arrPush(5)
+console.log(arrPush(5)) // [1, 2, 3, 4, 5]
+
 ```
 
 
