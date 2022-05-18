@@ -162,6 +162,36 @@ console.log(arrPush(5)) // [1, 2, 3, 4, 5]
 # На разбор
 
 ```javascript
+
+function filter(head, p) {
+  console.log(head)
+  let a = {};
+  
+  function filterObj(head, p){
+    for(let key in head){
+//     console.log(head[key])
+      let val = head.next;
+      console.log(head.data)
+      console.log(head.next)
+//       console.log(head.next)
+      if(p(head.data)){
+        a = {
+          data: head.data,
+          next: filterObj(val, p)
+        }
+      }
+    }
+  }
+  if(head === null){
+    console.log('smth')
+    return null
+    }else{
+      filterObj(head, p)
+    }
+  console.log(a)
+   return a
+}
+
 https://www.codewars.com/kata/58ee4db3e479611e6f000086/train/javascript
 function bitMarch (n) {
 	let a = [0,0,0,0,0,0,0,0];
