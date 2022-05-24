@@ -130,7 +130,679 @@ function App () {
 export default App;
 ```  
 ## React хуки  
+Предназначены для управления функциональными компонентами, это функции которые забинжены в реакте при этом их можно использовать и в своих хуках кроме функц. элементов.  
+###  Хуки можно использовать только на верхнем уровне вложенности  
+Примеры хуков  
+- useState()
+- useEffect()
+- useRef()
+- useMemo()
+- useCallback()
+- useContext()    
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+## добовление стилей css  
+
+
+```javascript
+import React from 'react';
+
+import './styles/style.css';
+
+function App() {
+
+  return (
+    <div className = "App">
+      <div calssName = "post">
+        <div className = "post__content">
+          <strong>1. Javascript</strong>
+        </div>
+        Javascript - its a programming language
+      </div>
+        <div className = "post__btns">
+          <button>Delete</button>
+        </div>
+    </div>
+  )
+}
+
+export default App;
+```
+<div className = "App">
+      <div calssName = "post">
+        <div className = "post__content">
+          <strong>1. Javascript</strong>
+        </div>
+        Javascript - its a programming language
+      </div>
+        <div className = "post__btns">
+          <button>Удалить</button>
+        </div>
+    </div>
+<br />
+
+
+По стандарту создаётся папка с css файлом и стилями в нем все как по классике, а дальше нужно импортировать папку в приложение.  ``import './styles/style.css';``  
+
+Прописав стили и добавив структуру в компонент мы теперь можем все удобно использовать НО.  
+Теперь нужно все это модернизировать чтобы можно было менять текст в посте  
+Для того чтобы компоннент принимал в себя данные нужно использовать ключевое слово ``props``, используется оно как обычный аргумент функции, передаёт пустой обьект если ничего не передать  
+```javascript
+// КОМПОНЕНТНЫЙ ФАЙЛ
+const PostItem = (props) => {
+
+  return (
+    <div className = "App">
+      <div calssName = "post">
+        <div className = "post__content">
+          <strong>1. Javascript</strong>
+        </div>
+        Javascript - its a programming language
+      </div>
+        <div className = "post__btns">
+          <button>Delete</button>
+        </div>
+    </div>
+  )
+}
+
+// ПЕРЕДАЧА ДАННЫХ В ПРОПС
+// ФАЙЛ РЕАЛЬНОГО ПРИЛОЖЕНИЯ
+import PostItem from './components/PostItem'
+function App() {
+  return (
+    <div className = "App">
+      <PostItem post = {{id: 1, title: 'Javascript', body: 'Description'}}/>
+    </div>
+  )
+}
+//  ПРИЁМКА ДАННЫХ В КОМПОНЕНТЕ ИЗ ПРОПСА
+// КОМПОНЕНТНЫЙ ФАЙЛ
+
+const PostItem = (props) => {
+
+  return (
+    <div className = "App">
+      <div calssName = "post">
+        <div className = "post__content">
+          <strong>{props.post.id}{props.post.title}</strong>
+        </div>
+        {props.post.body}
+      </div>
+        <div className = "post__btns">
+          <MyButton>Delete</MyButton>
+        </div>
+    </div>
+  )
+}
+```
+Теперь данные передаваемые в пропс будут работать но такое хорошо лишь при небольшом количестве скопированных компонентов  
+### Реализация большоого количества постов через массив с хуком  
+Для реализации в хук состояния передаётся массив обьектов постов, следующим шагом массив обьектов преобразовавыетсяво множество реакт элементов при помощи arr.map, преобразование идёт прямо в компонент с передачей в пропс компонента обьекта массива, дальше все будет работать, но при использовании такого приёма следует добовлять ключи на сделанные обьекты, или реакт а) предупредит в косноли б) будет дольше рндерить, ключи должны быть уникальны, но можно и использовать индексы массива(только если не предпологается изменений массива)
+
+
+
+```jsx
+// Приложение 
+function App () {
+  const [posts, setPosts] = useState([
+    {id: 1, title: 'Javascript', body: 'Description'}
+    {id: 2, title: 'Javascript 2', body: 'Description'}
+    {id: 2, title: 'Javascript 3', body: 'Description'}
+  ])
+
+return (
+  <div classname = "App">
+  <h1 style = {{textAlign: 'center'}}>Список постов</h1> /* можно писать стили прямо в теге как будто передавая их в пропс */
+    {posts.map(post => 
+      <PostItem post = {post} key = {post.id}/>
+    )}
+  </div>
+)
+}
+// теперь можно то что описано выше в returne ззаписать как новый компонент
+// Новый файл компонентов
+import PostItem from './PostItem';
+
+// деструктуризация пропса или простыми словами {posts} сразу же вытаскиваем нужную информацию из пропса
+  const PostList = ({posts, title}) => {
+    return (
+        <div classname = "App">
+  <h1 style = {{textAlign: 'center'}}>
+    {title}
+  </h1>
+    {posts.map(post => 
+      <PostItem post = {post} key = {post.id}/>
+    )}
+  </div>
+    )
+  }
+export default PostList
+// Приложение
+import PostList from './components/PostList';
+function App () {
+  const [posts, setPosts] = useState([
+    {id: 1, title: 'Javascript', body: 'Description'}
+    {id: 2, title: 'Javascript 2', body: 'Description'}
+    {id: 2, title: 'Javascript 3', body: 'Description'}
+  ])
+
+return (
+  <div classname = "App">
+    <PostList  posts = {posts} title = "Список постов 1"/>
+  </div>
+  )
+}
+// теперь можно везде использовать разные листы и тд с роазным кол вом постов называнием и содержанием как компонент, меняя все непосредственно из реакта
+```  
+### Часть 2 реализация списка с интерактивностью  
+
+
+```jsx
+import PostList from './components/PostList';
+function App () {
+  const [posts, setPosts] = useState([
+    {id: 1, title: 'Javascript', body: 'Description'}
+    {id: 2, title: 'Javascript 2', body: 'Description'}
+    {id: 2, title: 'Javascript 3', body: 'Description'}
+  ])
+
+return (
+  <div classname = "App">
+    <form>
+    <input type = "text" placeholder = "Название поста"> </input>
+    <input type = "text" placeholder = "Описание поста"> </input>
+    <button>Создать пост</button>
+    </form>
+    <PostList  posts = {posts} title = "Список постов 1"/>
+  </div>
+  )
+}
+```
+Создаём отдельную папку UI для графческих компонентов а в ней папку button для кнопки, внутри этой же папки создаётся файл со стилем кнопки, пропись стилей, а дальше нужно импортировать стили с классом(в примере класс myBtn).  
+```jsx
+// компонент кнопки
+import classes from './MyButton.module.css' 
+
+const MyButton = ({children, ...props}) => {
+  return (
+    <button {...props} className = {classes.myBtn}> //(*)
+      {children} // для того чтобы получить текст из кнопки и приложения
+   </button>
+  )
+
+}
+// * все пропсы переданные в App, в строке * будут передавать в кнопку
+// компонент инпута  
+import calsses from './MyInput.module.css'
+const MyInput = (props) => {
+  return (
+    <input  className = {classes.myInput} {...props}/>
+  )
+}
+
+
+// приложение 
+import PostList from './components/PostList';
+function App () {
+  const [posts, setPosts] = useState([
+    {id: 1, title: 'Javascript', body: 'Description'}
+    {id: 2, title: 'Javascript 2', body: 'Description'}
+    {id: 2, title: 'Javascript 3', body: 'Description'}
+  ])
+
+
+
+  // делаем хук состояния для получения информации(тайтла) в функцию конструктор поста
+  const [title, settitle] = useState('');
+  // const bodyInputRef = useRef(); // хук для доступа к дом элементам 
+  const [body, setBody] = useState('')
+  const addNewPost = () => {
+    e.preventDefault() // для того чтобы остановить обновление страницы тк кнопка всегда с submit тут обновления страницы ни к чему
+    const newPost = {
+      id: Date.now()
+      title,
+      body
+    }
+
+    setPosts([...post, newPost]); // закидываем конструкторные посты 
+    // для автоочистки формы
+    setTitle('');
+    setBody('');
+    console.log(title) // то что вписано в инпут тайтла
+    console.log(bodyInputRef.current.value)
+  }
+  // если элемент не вязать есть другой способ получения значения из элемента, с использованием соответствующего хука
   
-   
 
+
+return (
+  <div classname = "App">
+    <form>
+    <MyInput  // инпут способом с вязкой
+    // вяжем по старой схеме со стейтом
+    value = {title} 
+    // функция для отслеживания что пользователь вводит  
+    onChange ={e => setTitle(e.target.value)}
+    type = "text" 
+    placeholder = "Название поста" /> 
+    
+    <MyInput // инпут способом с дом элементами
+       value = {body}
+    onChange ={e => setBody(e.target.value)}
+    ref = {bodyInputRef}
+    type = "text" 
+    placeholder = "Описание поста"/> 
+    <MyButton onClick = {addNewPost}>Создать пост</MyButton>
+    </form>
+    <PostList  posts = {posts} title = "Список постов 1"/>
+  </div>
+  )
+}
+
+
+// такой пример будет работать не совсем корректно так как под каждую форму создаётся новый стейт, вместо того чтобы делать новые стейты можно все поместить в один обьект, и работать в его рамках
+
+
+import PostList from './components/PostList';
+function App () {
+  const [posts, setPosts] = useState([
+    {id: 1, title: 'Javascript', body: 'Description'}
+    {id: 2, title: 'Javascript 2', body: 'Description'}
+    {id: 2, title: 'Javascript 3', body: 'Description'}
+  ])
+
+  const [post, setPost] = useState({title: '', body: ''});
+  const [body, setBody] = useState('');
+
+  const addNewPost = () => {
+    e.preventDefault()
+    setPosts([...post, {...post, id: Date.now()}]);  
+    setPost({title: '', body: ''})
+  }
+
+return (
+  <div classname = "App">
+    <form>
+    <MyInput 
+    value = {post.title} 
+    onChange ={e => setPost({...post, title: e.target.value})}
+    type = "text" 
+    placeholder = "Название поста" /> 
+    
+    <MyInput 
+       value = {post.body}
+    onChange ={e => setPost({...post, body: e.target.value})}
+    ref = {bodyInputRef}
+    type = "text" 
+    placeholder = "Описание поста"/> 
+    <MyButton onClick = {addNewPost}>Создать пост</MyButton>
+    </form>
+    <PostList  posts = {posts} title = "Список постов 1"/>
+  </div>
+  )
+}
+
+```
+ Для того чтобы все работало в примере с инпутом по домэлементу нужно менять его компонент, так как Реакт не поймет куда шла ссылка, нужно ее явно указать в компоненте  
+ Для этого весь компонент оборачивается в функцию ``React.forwardRef()``
+### Неуправляемый элемент
+```jsx
+import calsses from './MyInput.module.css'
+const MyInput = React.forwardRef((props, ref) => {
+  return (
+    <input  ref = {ref} className = {classes.myInput} {...props}/>
+  )
+});
+
+
+```
+### Важная ремарка классы из реакта применяются так как будто использован бэм, такое поведение используется для изоляции, но теперь об этом не нужно сильно беспокоится  
+И так форма сделана все работает, но теперь к оптимизации, ведь весь form также следует запереть как компонент, в итоге получится свовсем маленький код для неплохого Уже кое как работающего приложения.  
+Создаётся компонент файл для всей формы, переносим туда всю форму.  
+Немного о пропсах: их передача идет с верху вниз то есть из app в компонент, но не наоборот, исходя из этого нельзя в лоб сделать так конструктор ведь форма должна себя передать на верх(в app).  
+Для реения подобных проблем нужно использовать callback функцию из родительского в дочерний компоненты, эта функция подождёт пока post закончит работу и получит в себя значения компонента!    
+```jsx
+//Компонент формы
+import MyInput from './UI/input/MyInput';
+  import MyButton from './UI/button/MyButton';
+
+  const postForm = ({create}) => {
+      const [post, setPost] = useState({title: '', body: ''}); // так же выполняется перенос стейта из приложения
+
+  const addNewPost = () => {
+    e.preventDefault()
+    const newPost = {
+      ...post, id: Date.now()
+    }
+    create(newPost)
+    setPost({tite:'', body: ''})
+  }
+    <form>
+    <MyInput 
+    value = {post.title} 
+    onChange ={e => setPost({...post, title: e.target.value})}
+    type = "text" 
+    placeholder = "Название поста" /> 
+    
+    <MyInput 
+       value = {post.body}
+    onChange ={e => setPost({...post, body: e.target.value})}
+    ref = {bodyInputRef}
+    type = "text" 
+    placeholder = "Описание поста"/> 
+    <MyButton onClick = {addNewPost}>Создать пост</MyButton>
+    </form>
+}
+export default PostForm
+
+// итоговое приложение
+import PostList from './components/PostList';
+function App () {
+  const [posts, setPosts] = useState([
+    {id: 1, title: 'Javascript', body: 'Description'}
+    {id: 2, title: 'Javascript 2', body: 'Description'}
+    {id: 2, title: 'Javascript 3', body: 'Description'}
+  ])
+  const createPost = (newPost) => {
+    setPosts([...posts, newPost])
+  }
+  
+return (
+  <div classname = "App">
+      <PostForm create={createPost}/>
+    <PostList  posts = {posts} title = "Список постов 1"/>
+  </div>
+  )
+}
+```
+Ура теперь можно создавать посты как угодно сколько угодно и все максимально оптимизированно работает! Остался последний функционал их удаление.  
+Реализация будет по тому же принципу с обратным вызовом  
+```jsx
+//Компонент PostList (был ранее, отвечает за обычные списки)
+const PostList = ({posts, title, remove}) => {
+    return (
+    <div>
+  <h1 style = {{textAlign: 'center'}}>
+    {title}
+  </h1>
+    {posts.map((post, index) => 
+      <PostItem remove = {remove} number = {index + 1} post = {post} key = {post.id}/>
+    )}
+  </div>
+    )
+  }
+export default PostList
+// компонент кнопки обычного списка так же ранее
+const PostItem = (props) => {
+
+  return (
+    <div className = "App">
+      <div calssName = "post">
+        <div className = "post__content">
+          <strong>{props.post.id}{props.post.title}</strong>
+        </div>
+        {props.post.body}
+      </div>
+        <div className = "post__btns">
+          <MyButto onClick = {() => props.remove(props.post)}>Delete</MyButto>
+        </div>
+    </div>
+  )
+}
+
+
+// приложение
+import PostList from './components/PostList';
+function App () {
+  const [posts, setPosts] = useState([
+    {id: 1, title: 'Javascript', body: 'Description'}
+    {id: 2, title: 'Javascript 2', body: 'Description'}
+    {id: 2, title: 'Javascript 3', body: 'Description'}
+  ])
+  const createPost = (newPost) => {
+    setPosts([...posts, newPost])
+  }
+  
+  //передаётся post из дочернего компонента
+  const removePost = (post) => {
+    setPost(posts.filter(p => p.id !== post.id))
+  }
+return (
+  <div classname = "App">
+    <PostForm create={createPost}/>
+    // условная отрисовка
+      {posts.length !== 0 ?
+       PostList  remove = {removePost} posts = {posts} title = "Список постов 1"/> :
+       <h1 style = {{textAlign = "center"}}>Постов не найдено</h1>
+      }
+
+    <
+  </div>
+  )
+}
+```
+## Сортировка постов  
+```jsx
+
+import PostList from './components/PostList';
+function App () {
+  const [posts, setPosts] = useState([
+    {id: 1, title: 'Javascript', body: 'Description'}
+    {id: 2, title: 'Javascript 2', body: 'Description'}
+    {id: 2, title: 'Javascript 3', body: 'Description'}
+  ]);
+  const [selectedSort, setSelectedSort] = useState('');
+  const createPost = (newPost) => {
+    setPosts([...posts, newPost])
+  }
+  
+  const removePost = (post) => {
+    setPost(posts.filter(p => p.id !== post.id))
+  }
+  const sortPosts = (sort) => {
+    setSelectedSort(sort);
+    setPosts([...posts].sort((a, b) => a[sort.localCompare(b[sort])]))
+  }
+return (
+  <div classname = "App">
+    <PostForm create={createPost}/>
+    <div> 
+      <MySelect
+      value = {selectedSort}
+      onChange= {sort => setSelectedSort(sort)}
+        defaultValue = 'Сортировка'
+        option = {[
+          {value :'title', name: 'По названию'},
+          {value: 'body', name: 'По описанию'}
+        ]}
+      />
+    </div>
+      {posts.length !== 0 ?
+       PostList  remove = {removePost} posts = {posts} title = "Список постов 1"/> :
+       <h1 style = {{textAlign = "center"}}>Постов не найдено</h1>
+      }
+
+    <
+  </div>
+  )
+}
+
+// компонент  seleкта
+
+const MySelect = ({option, defaultValue, value, onChange}) =>{
+  return (
+    <select 
+    value = {value}
+    onChange = {event => onChange(event.target.value)}
+    >
+        <option disabled value = "">{defaultValue}</option>
+        {options.map(option =>
+          <option key= {option.value} value = {option.value}>
+            {option.name}
+          </option>
+        )}
+    </select>
+  );
+}; 
+```
+## Механизм поиска 
+```jsx
+import PostList from './components/PostList';
+function App () {
+  const [posts, setPosts] = useState([
+    {id: 1, title: 'Javascript', body: 'Description'}
+    {id: 2, title: 'Javascript 2', body: 'Description'}
+    {id: 2, title: 'Javascript 3', body: 'Description'}
+  ]);
+  const [selectedSort, setSelectedSort] = useState('');
+  const [searchQuery, setSearchqQuery] = useState('');
+
+  function getSortedPosts() = {
+
+  }
+  const sortedPosts = useMemo(() => {
+    if(sectedSort){
+      return [...posts].sort((a, b) => a[selectedSort].localCompare(b[selectedSort]))
+    }
+    return posts;
+  }, [selectedSort, posts]);
+
+  const sortedAndSearchedPosts = UseMemo(() => {
+    return sortedPosts.filter(post => post.title.toLowerCase().includes(searchQuery.toLowerCase()))
+  }, [serchQuery, sortedPosts])
+
+  const createPost = (newPost) => {
+    setPosts([...posts, newPost])
+  }
+  
+  const removePost = (post) => {
+    setPost(posts.filter(p => p.id !== post.id))
+  }
+  const sortedPosts = (sort) => {
+    setSelectedSort(sort);
+  }
+return (
+  <div classname = "App">
+    <PostForm create={createPost}/>
+    <div>
+    <MyInput
+    value = {searchQuery}
+    onChange= {e => setSearchQuery(e.target.value)}
+      placeholder = "поиск"
+    /> 
+      <MySelect
+      value = {selectedSort}
+      onChange= {sort => setSelectedSort(sort)}
+        defaultValue = 'Сортировка'
+        option = {[
+          {value :'title', name: 'По названию'},
+          {value: 'body', name: 'По описанию'}
+        ]}
+      />
+    </div>
+      {sortedAndSearchedPosts.length !== 0 ?
+       PostList  remove = {removePost} posts = {sortedAndSearchedPosts} title = "Список постов 1"/> :
+       <h1 style = {{textAlign = "center"}}>Постов не найдено</h1>
+      }
+
+    <
+  </div>
+  )
+}
+```
+UseMemo(callback, deps) - хук который 1 параметром принимает функцию обратного вызова и массив зависимости.  
+Работает так что callback должен вернуть свои вычисления.
+В массив зависимостей передаются переменные поля обьекта и тд.  
+Хук работает так что он вычисляет,запоминает результат вычислений, кеширует.На каждый следующий вызов достайтся массив из кеша.  
+Но если меняется переменная зависимостей то функция вновь пересчитает все и кеширует.  
+Если массив пуст функция отработает лишь единожды и больше не вызовется  
+
+Стадия уже по классике итоговая декомпозиция
+```jsx
+// создаем компонент для поиска и фильтра
+const PostFilter = ({filter, setFilter}) => {
+  return (
+      <div classname = "App">
+    <PostForm create={createPost}/>
+    <div>
+    <MyInput
+    value = {filter.query}
+    onChange= {e => setFilter({...filter, query: e.target.value})}
+      placeholder = "поиск"
+    /> 
+      <MySelect
+      value = {filter.sort}
+      onChange= {selectedSort => setFilter({...filter, sort: selectedSort})}
+        defaultValue = 'Сортировка'
+        option = {[
+          {value :'title', name: 'По названию'},
+          {value: 'body', name: 'По описанию'},
+        ]};
+      />
+    </div>
+  );
+
+};
+
+
+function App () {
+  const [posts, setPosts] = useState([
+    {id: 1, title: 'Javascript', body: 'Description'}
+    {id: 2, title: 'Javascript 2', body: 'Description'}
+    {id: 2, title: 'Javascript 3', body: 'Description'}
+  ]);
+const [filter, setFilter] = useState({sort: '', query: ''})
+
+  function getSortedPosts() = {
+
+  }
+  const sortedPosts = useMemo(() => {
+    if(filter.sort){
+      return [...posts].sort((a, b) => a[filter.sort].localCompare(b[filter.sort]))
+    }
+    return posts;
+  }, [filter.sort, posts]);
+
+  const sortedAndSearchedPosts = UseMemo(() => {
+    return sortedPosts.filter(post => post.title.toLowerCase().includes(filter.query.toLowerCase()))
+  }, [filter.query, sortedPosts])
+
+  const createPost = (newPost) => {
+    setPosts([...posts, newPost])
+  }
+  
+  const removePost = (post) => {
+    setPost(posts.filter(p => p.id !== post.id))
+  }
+return (
+  <div classname = "App">
+    <PostForm create={createPost}/>
+      <PostFilter 
+      filter = {filter}
+      setFilter = {setFilter}
+      />
+      {sortedAndSearchedPosts.length !== 0 ?
+       PostList  remove = {removePost} posts = {sortedAndSearchedPosts} title = "Список постов 1"/> :
+       <h1 style = {{textAlign = "center"}}>Постов не найдено</h1>
+      }
+
+    <
+  </div>
+  )
+}
+```
