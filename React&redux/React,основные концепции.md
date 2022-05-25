@@ -133,27 +133,12 @@ export default App;
 Предназначены для управления функциональными компонентами, это функции которые забинжены в реакте при этом их можно использовать и в своих хуках кроме функц. элементов.  
 ###  Хуки можно использовать только на верхнем уровне вложенности  
 Примеры хуков  
-- useState()
+- useState() - состояние
 - useEffect()
-- useRef()
+- useRef() - явное указание ссылки
 - useMemo()
 - useCallback()
 - useContext()    
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 ## добовление стилей css  
 
@@ -806,3 +791,140 @@ return (
   )
 }
 ```
+## Модальное окно  
+Перемещение формы для создания в модальное окно
+```css
+// в UI делаем папку для модального окна, в ней компонент файл и css стили
+// MyModal.module.css
+.myModal {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  right:0;
+  left: 0;
+  display: none;
+  background: rgba(0,0,0, 0.5);
+}
+
+.myModalContent{
+  background: white;
+  min-width: 250px;
+}
+
+.myModal.active{
+  display: flex;
+  justify-content:center;
+  align-items: center;
+}
+```
+```jsx
+// модальный компонент
+import cl from './MyModal.module.css'
+  const MyModal = ({children, visible, setVisible}) =>{
+    const rootClasses = [cl.myModal];
+    if(visible){
+      rootclasses.push(cl.active)
+    }
+    return (
+      <div className = {[rootClasses].join(' ')} onClick = {() => setVisible(false)}>
+        <div className ={cl.myModalContent} onClick = {(e) => e.StopPropagation()}>
+          {children}
+        </div>
+      </div>
+
+    )
+  }
+```
+```jsx
+// приложение
+function App () {
+  const [posts, setPosts] = useState([
+    {id: 1, title: 'Javascript', body: 'Description'}
+    {id: 2, title: 'Javascript 2', body: 'Description'}
+    {id: 2, title: 'Javascript 3', body: 'Description'}
+  ]);
+const [filter, setFilter] = useState({sort: '', query: ''})
+const [modal, setmodal] = useState(false); // состояниемодального окна(закрыто)
+  function getSortedPosts() = {
+
+  }
+  const sortedPosts = useMemo(() => {
+    if(filter.sort){
+      return [...posts].sort((a, b) => a[filter.sort].localCompare(b[filter.sort]))
+    }
+    return posts;
+  }, [filter.sort, posts]);
+
+  const sortedAndSearchedPosts = UseMemo(() => {
+    return sortedPosts.filter(post => post.title.toLowerCase().includes(filter.query.toLowerCase()))
+  }, [filter.query, sortedPosts])
+
+  const createPost = (newPost) => {
+    setPosts([...posts, newPost])
+    setModal(false); // закрыть модальное окно после события создания поста
+  }
+  
+  const removePost = (post) => {
+    setPost(posts.filter(p => p.id !== post.id))
+  }
+return (
+  <div classname = "App">
+  <MyButton onClick = {() => setModal{true}} >
+  Создать пользователя
+  </MyButton>
+    <MyModal visible = {modal} setVisible = {setModal}>
+      <PostForm create={createPost}/>
+    </MyModal>
+      <PostFilter 
+      filter = {filter}
+      setFilter = {setFilter}
+      />
+      {sortedAndSearchedPosts.length !== 0 ?
+       PostList  remove = {removePost} posts = {sortedAndSearchedPosts} title = "Список постов 1"/> :
+       <h1 style = {{textAlign = "center"}}>Постов не найдено</h1>
+      }
+
+    <
+  </div>
+  )
+}
+```
+## Добавление анимации
+Для этого в реакте есть библиотека reactTransitionGroup  
+npm install react transition-group --save,  
+npm start  
+**Все про анимацию смотри в промежутке**  
+[1:30:00(ссылка)](https://youtu.be/GNrdg3PzpJQ?t=5447) - 1:33:00
+## Создание кастомных хуков  
+1. создать папку для хуков
+2. а в ней файл usePosts  
+Пример: перенос логики сортировки по поиску и фильтру в отдельный хук(sortedPosts, sortedAndSearchedPosts)  
+Пользовательские(кастомные хуки) обязательно используют в себе классические реакт хуки  
+```jsx
+// usePosts
+import {useMemo} from 'react';
+
+export const useSortedPosts = (posts, sort) => {
+    const sortedPosts = useMemo(() => {
+    if(filter.sort){
+      return [...posts].sort((a, b) => a[filter.sort].localCompare(b[filter.sort]))
+    }
+    return posts;
+  }, [filter.sort, posts]);
+  return sortedPosts:
+}
+
+export const usePosts = (posts, sort, query) => {
+  const sortedPosts = useSortedPosts(posts, sort);
+
+    const sortedAndSearchedPosts = UseMemo(() => {
+    return sortedPosts.filter(post => post.title.toLowerCase().includes(.query.toLowerCase()))
+  }, [query, sortedPosts]);
+  return sortedAndSerachedPosts;
+}
+
+// что в итоге записать вместо логики поиска сортировки и хука в приложении
+// ПРИЛОЖЕНИЕ
+const sortedAndSearchedPosts = usePosts(posts, filter.sort, filter.query);
+```
+Основы окончены!
