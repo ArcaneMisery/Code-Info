@@ -1039,5 +1039,5 @@ input:focus {
 
 
 </details>   
-## text-overflow
+## overflow-wrap
 Для переносов лучше всего использовать text-overflow: break-world, т.к. одновременно переносит обычные слова как word-wrap: normal, и ломает длинные строки.
